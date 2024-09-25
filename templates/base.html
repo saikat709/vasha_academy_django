@@ -1,10 +1,301 @@
+{% load static %}
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+<html lang="en" data-theme="light" xmlns:hover="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+        {% block title %}
+        {% endblock %}
+    </title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+      integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              clifford: "#da373d",
+              "navbar-hover": "#9D00FF",
+              "navbar-active": "#7A00CC",
+              "btn-bg": "#00FFFF",
+              "sub-text": "#A9A9A9",
+              "primary-text": "#E0E0E0",
+              "title-text": "#F2F2F2",
+            },
+            translate: {
+              '1.11': '50%',
+            }
+          },
+        },
+      };
+    </script>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+      .font-inter {
+        font-family: "Inter", system-ui;
+        font-optical-sizing: auto;
+        font-weight: 400;
+        font-style: normal;
+      }
+    </style>
+  </head>
+  <body
+    class="font-inter bg-gradient-to-tr from-neutral-950 to-gray-700 min-h-screen"
+  >
+    <header>
+      <!-- navbar start -->
+      <nav class="bg-stone-200 align-middle p-0 fixed w-full h-11 top-0 z-10">
+        <div class=" h-full flex justify-between align-center mx-0.5">
+          <!-- nav starts -->
+          <div class="flex">
+            <div class="relative" data-targetid="menu" onclick="toggleHide()">
+              <div tabindex="0" role="button" class="btn btn-ghost m-0">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-5 w-5 p-0"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M4 6h16M4 12h8m-8 6h16"
+                  />
+                </svg>
+              </div>
 
-</body>
+              <ul
+                tabindex="0"
+                id="menu"
+                class="menu menu-sm hidden absolute top-10 left-5  bg-stone-200 rounded-box z-[1] mt-3 w-52 p-2 shadow"
+              >
+                <li
+                  class="active hover:text-navbar-hover text-navbar-active transition-all ease-in-out duration-200"
+                >
+                  <a href="#">Home</a>
+                </li>
+                <li>
+                  <a
+                    href="#"
+                    class="hover:text-navbar-hover transition-all ease-in-out duration-200"
+                    >All Exam</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="#"
+                    class="hover:text-navbar-hover transition-all ease-in-out duration-200"
+                    >Our App</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="#"
+                    class="hover:text-navbar-hover transition-all ease-in-out duration-200"
+                    >FAQ</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="#"
+                    class="hover:text-navbar-hover transition-all ease-in-out duration-200"
+                    >Contact Us</a
+                  >
+                </li>
+                <div class="divider md:hidden"></div>
+                <div class="lg ml-1">
+                  <a
+                    class="py-2 hover:text-navbar-hover rounded-lg cursor-pointer pl-2 text-sm active text-navbar-active transition-all ease-in-out duration-200"
+                    >Bangla</a
+                  >/<a
+                    class="hover:text-navbar-hover text-sm py-2 pr-2 cursor-pointer rounded-lg transition-all ease-in-out duration-200"
+                    >English</a
+                  >
+                </div>
+              </ul>
+            </div>
+
+            <div class="hidden md:block lg ml-1">
+                  <a
+                    class="py-2 btn btn-ghost hover:text-navbar-hover rounded-lg cursor-pointer pl-2 text-sm active text-navbar-active transition-all ease-in-out duration-200"
+                    >Bangla</a
+                  >/<a
+                    class="hover:text-navbar-hover btn btn-ghost text-sm py-2 pr-2 cursor-pointer rounded-lg transition-all ease-in-out duration-200"
+                    >English</a
+                  >
+            </div>
+
+          </div>
+          <div class="h-full relative">
+            <a href="#" class="text-center whitespace-nowrap text-xl absolute top-1 left-0 -translate-x-1.11 translate-y-1">
+              Vasha Academy</a>
+          </div>
+          <div class="">
+            <a
+              class="btn bg-navbar-active hover:bg-navbar-hover text-white transition-all ease-in-out duration-200 hidden"
+              >Login/Sign up</a
+            >
+            <!-- main -->
+            <div class="relative">
+              <div tabindex="0" data-targetid="profile" class="btn btn-ghost avatar flex items-center gap-1">
+                <div class="ring-primary ring-offset-base-100 w-8 rounded-full ring-offset-2 ring-1">
+                  <img
+                    alt="USer image"
+                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQt4EuKV5YxkN0cWzT2yBLL14LfU1nw7m05SCAW3MyQhg_yHRocBGmKgA_KwphuF7t0B_k&usqp=CAU" />
+                </div>
+                <div><i class="fa-solid fa-angle-down"></i></div>
+              </div>
+              <ul
+                tabindex="0"
+                id="profile"
+                class="absolute right-5 top-12 hidden menu menu-sm dropdown-content bg-stone-200 rounded-b-md z-[1] mt-3 w-52 p-2 shadow text-2xl space-y-2">
+                <li><a>Mohammad Saikat Islam</a></li>
+                <li><a>01521771635</a></li>
+                <li><a
+                  class="py-2 mt-3 flex justify-center px-2 bg-navbar-active hover:bg-navbar-hover text-white transition-all ease-in-out duration-200"
+                  >Log Out</a
+                ></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </nav>
+      <!-- navbar ends -->
+    </header>
+
+    <main class="mx-auto container px-2 mt-15 md:px-0 relative">
+      <br>
+
+      <div class="top-64 fixed right-5 z-[10]">
+        <button
+            class="bg-navbar-active hover:bg-navbar-hover text-white transition-all ease-in-out duration-200 border-none text-lg rounded-full p-2 flex gap-1 items-center"
+            onclick="my_modal_3.showModal()"
+            >
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-8">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 0 1 .865-.501 48.172 48.172 0 0 0 3.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0 0 12 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018Z" />
+              </svg>
+        </button>
+        <dialog id="my_modal_3" class="modal">
+          <div class="modal-box bg-gray-950">
+            <form method="dialog">
+              <button
+                class="btn-sm btn-circle bg-red-500 hover:bg-navbar-hover text-white transition-all ease-in-out duration-200 border-none text-lg rounded-full p-2 flex gap-1 items-center absolute right-2 top-2"
+                >✕
+              </button
+              >
+            </form>
+          <!-- main content -->
+            <div class="space-y-3">
+              <h3 class="text-title-text text-xl text-center lg:text-2xl font-bold">Ask Any Question</h3>
+              <button
+              class="bg-navbar-active hover:bg-navbar-hover text-white transition-all ease-in-out duration-200 border-none text-lg rounded-lg p-2 flex gap-1 items-center justify-center w-full"
+              ><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-8">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 0 1 .865-.501 48.172 48.172 0 0 0 3.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0 0 12 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018Z" />
+              </svg> Chat With Us
+              </button
+            >
+            <button
+              class="text-navbar-active hover:bg-navbar-hover border border-gray-700 transition-all ease-in-out duration-200 text-lg rounded-lg p-2 flex gap-1 items-center justify-center w-full font-semibold hover:text-white"
+              ><i class="fa-brands text-2xl fa-whatsapp"></i> Text in WhatsApp
+              </button
+            >
+            <button
+              class="text-navbar-active hover:bg-navbar-hover transition-all ease-in-out duration-200 text-lg rounded-lg p-2 flex gap-1 items-center justify-center w-full font-semibold hover:text-white"
+              ><i class="text-2xl fa-solid fa-phone"></i> Call Us On 9990
+              </button
+            >
+          </div>
+        </div>
+        </dialog>
+      </div>
+
+    {% block body %}
+
+    {% endblock %}
+    </main>
+
+    <footer>
+      <!-- color dile diye dite paro bg-gray-900 -->
+      <Sectionn class="flex justify-center">
+       <button type="button" class="flex items-center justify-center w-54 text-white bg-black rounded-lg h-14">
+            <div class="mr-3">
+                <svg viewBox="30 336.7 120.9 129.2" width="30">
+                    <path fill="#FFD400"
+                        d="M119.2,421.2c15.3-8.4,27-14.8,28-15.3c3.2-1.7,6.5-6.2,0-9.7  c-2.1-1.1-13.4-7.3-28-15.3l-20.1,20.2L119.2,421.2z">
+                    </path>
+                    <path fill="#FF3333"
+                        d="M99.1,401.1l-64.2,64.7c1.5,0.2,3.2-0.2,5.2-1.3  c4.2-2.3,48.8-26.7,79.1-43.3L99.1,401.1L99.1,401.1z">
+                    </path>
+                    <path fill="#48FF48" d="M99.1,401.1l20.1-20.2c0,0-74.6-40.7-79.1-43.1  c-1.7-1-3.6-1.3-5.3-1L99.1,401.1z">
+                    </path>
+                    <path fill="#3BCCFF"
+                        d="M99.1,401.1l-64.3-64.3c-2.6,0.6-4.8,2.9-4.8,7.6  c0,7.5,0,107.5,0,113.8c0,4.3,1.7,7.4,4.9,7.7L99.1,401.1z">
+                    </path>
+                </svg>
+            </div>
+            <div>
+                <div class="text-xs">
+                    GET IT ON
+                </div>
+                <div class="-mt-1 font-sans text-xl font-semibold">
+                    Google Play
+                </div>
+            </div>
+            <div class="rounded-full m-2 w-12">
+              <img class="rounded-full" src="https://st.depositphotos.com/1491329/2998/i/450/depositphotos_29984153-stock-photo-spring-nature-beautiful-landscape-green.jpg" alt="App logo">
+            </div>
+        </button>
+      </Sectionn>
+      <section class="py-6">
+        <!-- Payment Section -->
+        <h3 class="text-title-text text-xl text-center lg:text-2xl font-bold">Payment With</h3>
+        <div class="flex flex-col lg:flex-row justify-center items-center gap-3">
+          <a href="">
+            <img src="{% static 'images/BKash-bKash-Logo.wine.svg' %}" alt="bkash" class="w-44">
+          </a>
+          <a>
+            <img src="{% static 'images/Nagad-Logo.wine.svg' %}" alt="Nagad" class="w-44">
+          </a>
+          <a href="">
+            <img src="{% static 'images/PayPal-Logo.wine.svg' %}" alt="" class="w-44">
+          </a>
+        </div>
+        <!-- follow us -->
+        <h3 class="text-title-text text-xl text-center lg:text-2xl font-bold pt-10 pb-4">Follow Us</h3>
+        <div class="flex justify-center items-center gap-8">
+          <a href="#"><i class="text-4xl text-blue-600 fa-brands fa-facebook"></i></a>
+          <a href="#"><i class="text-4xl text-red-700 fa-brands fa-youtube"></i></a>
+          <a href="#"><i class="text-4xl text-rose-900 fa-brands fa-instagram"></i></a>
+          <a href="#"><i class="fa-brands text-4xl fa-x-twitter"></i></a>
+        </div>
+        <!-- contact us -->
+        <h3 class="text-title-text text-xl text-center lg:text-2xl font-bold pt-10 pb-4">Contact Us</h3>
+        <div class="flex justify-center">
+        <div class="space-y-3">
+          <div class="flex gap-8 items-center"><i class="text-2xl text-blue-400 fa-solid fa-phone"></i><p class="text-primary-text/80">16780</p></div>
+          <div class="flex gap-8 items-center"><i class="text-2xl text-yellow-600 fa-solid fa-message"></i></i><p class="text-primary-text/80">team@vashaacademy</p></div>
+          <div class="flex gap-8 items-center"><i class="fa-solid text-2xl text-green-700 fa-location-dot"></i><p class="text-primary-text/80">gulistan,dhaka,bd</p></div>
+        </div></div>
+      </section>
+      <section class="bg-neutral-900 py-8">
+        <p class="text-center text-lg text-primary-text/70">@VashaAcademy 2024| All Rights Reserved</p>
+      </section>
+    </footer>
+  </body>
+  <script src="{% static 'js/script.js' %}"></script>
 </html>

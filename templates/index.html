@@ -1,336 +1,68 @@
+{% extends 'base.html' %}
 {% load static %}
 
-<!DOCTYPE html>
-<html lang="en" data-theme="light">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vasha Academy</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
-      integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    />
-    <link
-      href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css"
-      rel="stylesheet"
-      type="text/css"
-    />
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-      tailwind.config = {
-        theme: {
-          extend: {
-            colors: {
-              clifford: "#da373d",
-              "navbar-hover": "#9D00FF",
-              "navbar-active": "#7A00CC",
-              "btn-bg": "#00FFFF",
-              "sub-text": "#A9A9A9",
-              "primary-text": "#E0E0E0",
-              "title-text": "#F2F2F2",
-            },
-          },
-        },
-      };
-    </script>
-    <style>
-      @import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
-      .font-inter {
-        font-family: "Inter", system-ui;
-        font-optical-sizing: auto;
-        font-weight: 400;
-        font-style: normal;
-      }
-    </style>
-  </head>
-  <body
-    class="font-inter bg-gradient-to-tr from-neutral-950 to-gray-800 min-h-screen"
-  >
-    <header>
-      <!-- navbar start -->
-      <nav class="bg-stone-200 fixed w-full top-0 z-10">
-        <div class="navbar flex justify-between lg:container mx-auto">
-          <!-- nav starts -->
-          <div class="">
-            <div class="dropdown">
-              <div tabindex="0" role="button" class="btn btn-ghost">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  class="h-5 w-5"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M4 6h16M4 12h8m-8 6h16"
-                  />
-                </svg>
-              </div>
-              <ul
-                tabindex="0"
-                class="menu menu-sm dropdown-content bg-stone-200 rounded-box z-[1] mt-3 w-52 p-2 shadow"
-              >
-                <li
-                  class="active hover:text-navbar-hover text-navbar-active transition-all ease-in-out duration-200"
-                >
-                  <a href="#">Home</a>
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    class="hover:text-navbar-hover transition-all ease-in-out duration-200"
-                    >All Exam</a
-                  >
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    class="hover:text-navbar-hover transition-all ease-in-out duration-200"
-                    >Our App</a
-                  >
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    class="hover:text-navbar-hover transition-all ease-in-out duration-200"
-                    >FAQ</a
-                  >
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    class="hover:text-navbar-hover transition-all ease-in-out duration-200"
-                    >Contact Us</a
-                  >
-                </li>
-                <div class="divider md:hidden"></div>
-                <div class="lg:hidden ml-1">
-                  <a
-                    class="py-2 hover:text-navbar-hover rounded-lg cursor-pointer pl-2 text-sm active text-navbar-active transition-all ease-in-out duration-200"
-                    >Bangla</a
-                  >/<a
-                    class="hover:text-navbar-hover text-sm py-2 pr-2 cursor-pointer rounded-lg transition-all ease-in-out duration-200"
-                    >English</a
-                  >
-                </div>
-              </ul>
-            </div>
-            <div class="hidden md:block">
-              <a
-                class="py-2 hover:text-navbar-hover rounded-lg cursor-pointer pl-2 text-sm active text-navbar-active"
-                >Bangla</a
-              >/<a
-                class="hover:text-navbar-hover text-sm py-2 pr-2 cursor-pointer rounded-lg"
-                >English</a
-              >
-            </div>
-          </div>
-          <!-- navbar center -->
-          <div class="">
-            <!-- <ul class="menu menu-horizontal px-1">
-          
-        </ul> -->
-            <a href="#" class="text-center text-xl">Vasha <br />Academy</a>
-          </div>
-          <!-- navbar end -->
-          <div class="">
-            <a
-              class="btn bg-navbar-active hover:bg-navbar-hover text-white transition-all ease-in-out duration-200 hidden"
-              >Login/Sign up</a
-            >
-            <!-- main -->
-            <div class="dropdown dropdown-end">
-              <div tabindex="0" role="button" class="btn btn-ghost avatar flex items-center gap-1">
-                <div class="ring-primary ring-offset-base-100 w-8 rounded-full ring-offset-2 ring-1">
-                  <img
-                    alt="Tailwind CSS Navbar component"
-                    src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
-                </div>
-                <div><i class="fa-solid fa-angle-down"></i></div> 
-              </div>
-              <ul
-                tabindex="0"
-                class="menu menu-sm dropdown-content bg-stone-200 rounded-b-md z-[1] mt-3 w-52 p-2 shadow text-2xl space-y-2">
-                <li><a>User Name</a></li>
-                <li><a>Phone Number</a></li>
-                <li><a
-                  class="py-2 flex justify-center px-2 bg-navbar-active hover:bg-navbar-hover text-white transition-all ease-in-out duration-200"
-                  >Log Out</a
-                ></li>
-              </ul>
-            </div>
-          </div>
+{% block title %}
+  Vasha Academy - Homepage
+{% endblock %}
+
+
+{% block body %}
+  <br>
+  <section>
+      <div class="pt-24 m-auto">
+        <div class="flex justify-center w-full rounded-3xl">
+          <video src="https://media.istockphoto.com/id/1574596562/video/b-roll-hand-of-woman-touching-meadow-in-the-rays-of-the-sunset-summer-female-walks-through.mp4?s=mp4-640x640-is&k=20&c=TMvRwr9vgN8RqDD_GCTsaDCkX78vJTht8_V_nubCLEs="
+                 class="h-fit w-2/3 rounded-2xl lg:w-[35vw]"
+                 title=""
+                 frameborder="0"
+                 autoplay loop muted playsinline
+          > </video>
         </div>
-      </nav>
-      <!-- navbar ends -->
-    </header>
-    <main class="mx-auto container px-2 md:px-0">
-      <!-- live video -->
-      <section>
-      <div class="pt-24">
-        <div class="flex justify-center lg:h-[30vh] w-full rounded-3xl">
-          <video src="./assets/videos/hero_section.mp4" class="h-full w-fit rounded-2xl" src="https://www.youtube.com/embed/KJwYBJMSbPI?si=xlXp9AoxSjI50Mqu" title="" frameborder="0" autoplay loop muted playsinline>
-          </video>
-        </div>
-        <p class="text-primary-text text-center mt-4 text-xl">This is Vasha Academy. Where you aim to accelerate your learning</p>
+        <p class="text-primary-text text-center mt-4 text-sm">This is Vasha Academy. Where you aim to accelerate your learning</p>
       </div>
-      </section>
-      <!-- course Card section -->
-      <section class="py-16 text-center">
+    <br>
+  </section>
+
+  <!--  Courses-->
+
+  <section class="py-10 w-2/3 h-200 lg:h-250 mx-auto text-center pb-15">
         <!-- title  -->
-        <h3 class="text-title-text text-3xl lg:text-5xl font-black">UBT Exam 2024</h3>
+        <h3 class="text-title-text text-3xl lg:text-5xl mb-5 font-black">UBT Exam 2024</h3>
         <!-- course cards -->
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-10">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-1 mt-2">
           <!-- card -->
-          <div class="card bg-gray-800 shadow-md p-4">
-            <figure class="">
-              <img
-                src="./assets/images/exampic.jpeg"
-                alt="exam pic"
-                class="rounded-xl h-64 lg:h-80 w-full" />
-            </figure>
-            <div class="card-body items-center text-center p-0 mt-4">
-              <div class="relative">
-              <h2 class="card-title text-title-text text-2xl">Exam Title</h2>
-              <p class="text-red-400 text-base absolute top-0 -right-10 font-semibold">Free</p>
+            {% for i in exams %}
+            <div class="card bg-gray-800 shadow-md p-2 pb-10 mx-5 mb-5">
+                <div class="card-body items-center text-center p-0 mt-4">
+                  <div class="relative">
+                <h2 class="card-title text-title-text text-2xl">Exam Title</h2>
+                {% if i == 1 %}
+                      <p class="text-red-400 text-base absolute top-0 -right-10 font-semibold">Free</p>
+                 {% endif %}
+                </div>
+                <p class="text-primary-text">Exam Description</p>
+                <p class="text-primary-text btext-bold">Price: </p>
+                <div class="card-actions">
+                    <button
+                        class="bg-navbar-active hover:bg-navbar-hover text-white transition-all ease-in-out duration-200 border-none text-lg px-6 rounded-md py-2"
+                    >
+                    {% if i == 1 %}
+                        See Course
+                    {% else %}
+                        Enroll Now
+                    {% endif %}
+
+                     </button>
+                </div>
+                </div>
             </div>
-              <p class="text-primary-text">Exam Description</p>
-              <div class="card-actions">
-                <button
-              class="bg-navbar-active hover:bg-navbar-hover text-white transition-all ease-in-out duration-200 border-none text-lg px-6 rounded-md py-2"
-              >Enroll Now</button
-            >
-              </div>
-            </div>
-          </div>
-          <!-- card -->
-          <div class="card bg-gray-800 shadow-md p-4">
-            <figure class="">
-              <img
-                src="./assets/images/exampic.jpeg"
-                alt="exam pic"
-                class="rounded-xl h-64 lg:h-80 w-full" />
-            </figure>
-            <div class="card-body items-center text-center p-0 mt-4">
-              <div class="relative">
-              <h2 class="card-title text-title-text text-2xl">Exam Title</h2>
-              <p class="text-red-400 text-base absolute top-0 -right-10 font-semibold hidden">Free</p>
-            </div>
-              <p class="text-primary-text">Exam Description</p>
-              <div class="card-actions">
-                <button
-              class="bg-navbar-active hover:bg-navbar-hover text-white transition-all ease-in-out duration-200 border-none text-lg px-6 rounded-md py-2"
-              >Enroll Now</button
-            >
-              </div>
-            </div>
-          </div>
-          <!-- card -->
-          <div class="card bg-gray-800 shadow-md p-4">
-            <figure class="">
-              <img
-                src="./assets/images/exampic.jpeg"
-                alt="exam pic"
-                class="rounded-xl h-64 lg:h-80 w-full" />
-            </figure>
-            <div class="card-body items-center text-center p-0 mt-4">
-              <div class="relative">
-              <h2 class="card-title text-title-text text-2xl">Exam Title</h2>
-              <p class="text-red-400 text-base absolute top-0 -right-10 font-semibold hidden">Free</p>
-            </div>
-              <p class="text-primary-text">Exam Description</p>
-              <div class="card-actions">
-                <button
-              class="bg-navbar-active hover:bg-navbar-hover text-white transition-all ease-in-out duration-200 border-none text-lg px-6 rounded-md py-2"
-              >Enroll Now</button
-            >
-              </div>
-            </div>
-          </div>
-          <!-- card -->
-          <div class="card bg-gray-800 shadow-md p-4">
-            <figure class="">
-              <img
-                src="./assets/images/exampic.jpeg"
-                alt="exam pic"
-                class="rounded-xl h-64 lg:h-80 w-full" />
-            </figure>
-            <div class="card-body items-center text-center p-0 mt-4">
-              <div class="relative">
-              <h2 class="card-title text-title-text text-2xl">Exam Title</h2>
-              <p class="text-red-400 text-base absolute top-0 -right-10 font-semibold hidden">Free</p>
-            </div>
-              <p class="text-primary-text">Exam Description</p>
-              <div class="card-actions">
-                <button
-              class="bg-navbar-active hover:bg-navbar-hover text-white transition-all ease-in-out duration-200 border-none text-lg px-6 rounded-md py-2"
-              >Enroll Now</button
-            >
-              </div>
-            </div>
-          </div>
+            {% endfor %}
         </div>
-      </section>
-      <!-- download app and contact modal section -->
-      <section class="relative ">
-      <div class="text-center flex justify-center flex-col items-center space-y-2">
-        <h2 class="text-xl text-primary-text font-bold">Download Our App</h2>
-        <a href="#"><img src="./assets/images/playstorefull.svg" alt=""></a>
-      </div>
-      <!-- chat -->
-      <div class="absolute top-0 right-0">
-        <!-- You can open the modal using ID.showModal() method -->
-      <button
-              class="bg-navbar-active hover:bg-navbar-hover text-white transition-all ease-in-out duration-200 border-none text-lg rounded-full p-2 flex gap-1 items-center" onclick="my_modal_3.showModal()"
-              ><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-8">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 0 1 .865-.501 48.172 48.172 0 0 0 3.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0 0 12 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018Z" />
-              </svg>
-              </button
-            >
-      <dialog id="my_modal_3" class="modal">
-        <div class="modal-box bg-gray-950">
-          <form method="dialog">
-            <button
-              class="btn-sm btn-circle bg-red-500 hover:bg-navbar-hover text-white transition-all ease-in-out duration-200 border-none text-lg rounded-full p-2 flex gap-1 items-center absolute right-2 top-2"
-              >✕
-              </button
-            >
-          </form>
-          <!-- main content -->
-          <div class="space-y-3">
-            <h3 class="text-title-text text-xl text-center lg:text-2xl font-bold">Ask Any Question</h3>
-            <button
-              class="bg-navbar-active hover:bg-navbar-hover text-white transition-all ease-in-out duration-200 border-none text-lg rounded-lg p-2 flex gap-1 items-center justify-center w-full"
-              ><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-8">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 0 1 .865-.501 48.172 48.172 0 0 0 3.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0 0 12 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018Z" />
-              </svg> Chat With Us
-              </button
-            >
-            <button
-              class="text-navbar-active hover:bg-navbar-hover border border-gray-700 transition-all ease-in-out duration-200 text-lg rounded-lg p-2 flex gap-1 items-center justify-center w-full font-semibold hover:text-white"
-              ><i class="fa-brands text-2xl fa-whatsapp"></i> Text in WhatsApp
-              </button
-            >
-            <button
-              class="text-navbar-active hover:bg-navbar-hover transition-all ease-in-out duration-200 text-lg rounded-lg p-2 flex gap-1 items-center justify-center w-full font-semibold hover:text-white"
-              ><i class="text-2xl fa-solid fa-phone"></i> Call Us On 9990
-              </button
-            >
-          </div>
-        </div>
-      </dialog>
-      </div>
-    </section>
-    <!-- FAQ section -->
-    <section class="py-16">
-      <ul class="menu px-1 w-full">
+  </section>
+
+  <!--  FAQ   -->
+  <section class="py-10 mx-auto md:px-24 md:mx-24">
+      <ul class="menu px-1 px-5">
         <li>
           <details>
             <summary class="lg:text-3xl text-xl font-semibold text-title-text/80">Frequently Asked Questions</summary>
@@ -372,39 +104,5 @@
           </details>
       </ul>
     </section>
-    </main>
 
-    <footer>
-      <!-- color dile diye dite paro bg-gray-900 -->
-      <section class=" py-6">
-        <!-- Payment Section -->
-        <h3 class="text-title-text text-xl text-center lg:text-2xl font-bold">Payment With</h3>
-        <div class="flex flex-col lg:flex-row justify-center items-center gap-3">
-          <a href="">
-          <img src="./assets/images/BKash-bKash-Logo.wine.svg" alt="" class="w-44"></a>
-          <img src="./assets/images/Nagad-Logo.wine.svg" alt="" class="w-44"></a>
-          <a href=""><a href=""></a><img src="./assets/images/PayPal-Logo.wine.svg" alt="" class="w-44"></a>
-        </div>
-        <!-- follow us -->
-        <h3 class="text-title-text text-xl text-center lg:text-2xl font-bold pt-10 pb-4">Follow Us</h3>
-        <div class="flex justify-center items-center gap-8">
-          <a href="#"><i class="text-4xl text-blue-600 fa-brands fa-facebook"></i></a>
-          <a href="#"><i class="text-4xl text-red-700 fa-brands fa-youtube"></i></a>
-          <a href="#"><i class="text-4xl text-rose-900 fa-brands fa-instagram"></i></a>
-          <a href="#"><i class="fa-brands text-4xl fa-x-twitter"></i></a>
-        </div>
-        <!-- contact us -->
-        <h3 class="text-title-text text-xl text-center lg:text-2xl font-bold pt-10 pb-4">Contact Us</h3>
-        <div class="flex justify-center">
-        <div class="space-y-3">
-          <div class="flex gap-8 items-center"><i class="text-2xl text-blue-400 fa-solid fa-phone"></i><p class="text-primary-text/80">16780</p></div>
-          <div class="flex gap-8 items-center"><i class="text-2xl text-yellow-600 fa-solid fa-message"></i></i><p class="text-primary-text/80">team@vashaacademy</p></div>
-          <div class="flex gap-8 items-center"><i class="fa-solid text-2xl text-green-700 fa-location-dot"></i><p class="text-primary-text/80">gulistan,dhaka,bd</p></div>
-        </div></div>
-      </section>
-      <section class="bg-neutral-900 py-8">
-        <p class="text-center text-lg text-primary-text/70">@VashaAcademy 2024| All Rights Reserved</p>
-      </section>
-    </footer>
-  </body>
-</html>
+{% endblock %}
