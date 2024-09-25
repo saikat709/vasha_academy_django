@@ -1,6 +1,6 @@
 from django.shortcuts import render
-from customer.models import examineeProfile
-from .serializers import examineeserializer
+from customer.models import Profile
+from .serializers import ExamineeSerializer
 from rest_framework import viewsets,status
 from django.http import HttpResponse
 from rest_framework.response import Response
@@ -18,7 +18,7 @@ from django.contrib.auth.models import User
 
 class Examviewset(viewsets.ModelViewSet):
     queryset=User.objects.all()
-    serializer_class=examineeserializer
+    serializer_class= ExamineeSerializer
  
     @action(detail=False,methods=['Post']) 
     def newuser(self,request):
@@ -26,8 +26,8 @@ class Examviewset(viewsets.ModelViewSet):
      if serializer.is_valid():
          serializer.save()
          return Response (
-             {'message':'Your registration is completed'},
-             status=status.HTTP_201_CREATED
+            data={'message':'Your registration is completed'},
+            status=status.HTTP_201_CREATED
          )
      return Response ({'error':'Registration is not get well,Try again'},status=status.HTTP_400_BAD_REQUEST)
      

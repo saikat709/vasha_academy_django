@@ -11,3 +11,9 @@ def login(request):
 
 def verification(request):
     return render(request, "verification.html")
+
+def course(request, id):
+    return render(request, "course_details.html", {"exams": [1,1,1,11,1,1,1,1,1,1,1,2,2,2]})
+
+def notice(request):
+    return render(request, "notice.html")

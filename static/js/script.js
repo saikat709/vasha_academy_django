@@ -1,8 +1,8 @@
-function toggleHide(e){
-    console.log(this.data.targetid)
+function toggleHide(a){
+    document.querySelector(`#${a}`).classList.toggle('hidden')
 }
 
-window.addEventListener('load', ()=>{
+window.addEventListener('load', function(e){
     console.log("connected log")
 });
 

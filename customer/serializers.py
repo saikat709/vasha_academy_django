@@ -1,9 +1,9 @@
-from .models import examineeProfile
+from .models import Profile
 
 from rest_framework import serializers
 from django.contrib.auth.models import User
 
-class examineeserializer(serializers.ModelSerializer):
+class ExamineeSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
     confirm_password=serializers.CharField(write_only=True)
 

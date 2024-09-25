@@ -5,7 +5,7 @@ from .import views
 from rest_framework.routers import DefaultRouter
 
 router = DefaultRouter()
-router.register('profile',views.Examviewset)
+router.register('profile', views.Examviewset)
 
 urlpatterns = [
     path("",include(router.urls)),

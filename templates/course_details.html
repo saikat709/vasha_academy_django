@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+
+{% block body %}
+
+  <section class="py-5 w-5/6 h-200 lg:h-250 mx-auto text-center pb-15">
+        <!-- title  -->
+        <h3 class="text-title-text text-2xl lg:text-3xl mb-5 font-black">The Course Title Here</h3>
+        <!-- course cards -->
+        <div class="grid grid-cols-2 lg:grid-cols-3 gap-1 mt-2">
+          <!-- card -->
+            {% for i in exams %}
+            <div class="card bg-gray-800 shadow-md p-2 pb-6 mx-4 mb-5">
+                <div class="card-body items-center text-center p-0 mt-4">
+                  <div class="relative">
+                <h2 class="card-title w-full test-left text-title-text text-xl">Exam Title</h2>
+                </div>
+<!--                <p class="text-primary-text text-sm">Exam Description</p>-->
+                <div class="divider-x-1 bg-amber-800 h-5px w-3/4"></div>
+                <p class="text-primary-text btext-bold text-sm text-left w-full pl-10">Mark: <span class="text-green-500">0/29</span></p>
+<!--                <p class="text-primary-text btext-bold text-sm text-left w-full pl-10">Time: <span class="text-blue-500">48  minutes</span></p>-->
+<!--                <p class="text-primary-text btext-bold text-sm text-left w-full pl-10">Questions: <span class="text-amber-600">25</span></p>-->
+                <div class="card-actions mt-2">
+                    <button class="bg-navbar-active hover:bg-navbar-hover text-white transition-all ease-in-out duration-200 border-none text-lg px-2 rounded-md py-0.5"
+                      >Start Exam</button>
+                </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+</section>
+
+{% endblock %}
+
+
+{% for i in exams %}
+  <div class="card bg-gray-800 shadow-md p-2 pb-10 mx-5 mb-5">
+      <div class="card-body items-center text-center p-0 mt-4">
+        <div class="relative">
+      <h2 class="card-title text-title-text text-2xl">Exam Title</h2>
+      </div>
+      <p class="text-primary-text mb-2">Exam Description</p>
+      <div class="bg-amber-800 w-3/4 h-0.5"></div>
+      <div class="text-left space-y-1">
+        <p class="text-primary-text btext-bold">Mark: <span class="text-green-500">0/20</span></p>
+        <p class="text-primary-text btext-bold">Total Question: <span class="text-amber-200">20</span></p>
+        <p class="text-primary-text btext-bold">Total Time: <span class="text-green-500">20</span> Minutes</p>
+      </div>
+      <div class="card-actions">
+          <button
+              class="bg-navbar-active hover:bg-navbar-hover text-white transition-all ease-in-out duration-200 border-none text-lg px-6 rounded-md py-2"
+          >
+            Start Exam
+           </button>
+      </div>
+  </div>
+{% endfor %}

@@ -19,7 +19,7 @@ from django.contrib import admin
 from django.urls import path,include
 
 from django.conf import settings
-from .views import home, login, verification
+from .views import home, login, verification, course, notice
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -29,7 +29,9 @@ urlpatterns = [
 
     path('', home),
     path('login/', login),
-    path('verification/', verification)
+    path('verification/', verification),
+    path('course/<int:id>', course),
+    path('notice/', notice),
 ]
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
