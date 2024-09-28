@@ -1,16 +1,20 @@
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.template.defaulttags import url
+
+from course.models import Course
 
 
 def home(request, *args, **kwargs):
     exams = [1, 2, 3, 4]
+    lang = request.GET.get('lang', 'bn')
+    lang = lang if lang in ('bn', 'en') else 'bn'
+    request.session.lang = lang
+
+    #courses = Course.objects.
+
     return render(request, "index.html", {"exams": exams})
 
-def login(request):
-    return render(request, "login.html")
-
-def verification(request):
-    return render(request, "verification.html")
 
 def course(request, id):
     return render(request, "course_details.html", {"exams": [1,1,1,11,1,1,1,1,1,1,1,2,2,2]})

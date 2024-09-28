@@ -1,5 +1,9 @@
-from django.shortcuts import render
-from customer.models import Profile
+from re import fullmatch
+
+from django.shortcuts import render, redirect
+from customer.models import Profile, Customer
+from vashaacademy.utils import send_twilio_code
+from .forms import LoginForm
 from .serializers import ExamineeSerializer
 from rest_framework import viewsets,status
 from django.http import HttpResponse
@@ -10,88 +14,63 @@ from django.core.exceptions import ObjectDoesNotExist
 from .import serializers
 from rest_framework.authtoken.models import Token
 # from rest_framework.decorators import lo
-from django.contrib.auth import authenticate
+from django.contrib.auth import authenticate, login, logout
 from rest_framework.decorators import  api_view
-from django.contrib.auth.models import User
 
-# Create your views here.
+# Create your views here
+def login_view(request):
+    form = LoginForm(request.POST or None)
+    error = ""
+    print("LOGIN######33")
+    print(request.method)
+    print(form.is_valid())
+    print(form.errors)
 
-class Examviewset(viewsets.ModelViewSet):
-    queryset=User.objects.all()
-    serializer_class= ExamineeSerializer
- 
-    @action(detail=False,methods=['Post']) 
-    def newuser(self,request):
-     serializer=self.get_serializer(data=request.data)
-     if serializer.is_valid():
-         serializer.save()
-         return Response (
-            data={'message':'Your registration is completed'},
-            status=status.HTTP_201_CREATED
-         )
-     return Response ({'error':'Registration is not get well,Try again'},status=status.HTTP_400_BAD_REQUEST)
-     
+    if request.method == "POST" and form.is_valid():
+        fullname = form.cleaned_data['fullname']
+        number = form.cleaned_data['number']
+        password = form.cleaned_data['password']
 
-    @action(detail=False,methods=['Post']) 
-    def login(self,request):
-       if request.method == 'POST':  
-        username=request.data.get('username')
-        password=request.data.get('password')
-        print(username,password)
+        customer = Customer.objects.filter(number=number).first()
 
-        user=None
+        if customer:
+            customer_auth = password == customer.password
+            print(customer_auth)
+            if customer_auth:
+                login(request, customer)
+                return redirect("home")
+            else:
+                error = "Wrong Password"
+        else:
+            code = send_twilio_code()
 
-        if '@' in username:
-            try:
-                user=User.objects.get(email=username)
-                print(user)
-                if not user.check_password(password):
-                  user = None  
-            except User.ObjectDoesNotExist:
-                pass
-        
-        if not user:
-            user=authenticate(username=username,password=password)
-        
-        
+            request.session.code = code
+            request.session.number = number
+            request.session.password = password
+            request.session.fullname = fullname
+            #return render(request, "login.html", {'form': form, 'error': error})
 
-        if user:
-            token, _ = Token.objects.get_or_create(user=user)
-           
-            return Response({'token': token.key,'user_id':user.id}, status=status.HTTP_200_OK)
-
-        return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
-
-
-    @api_view(['POST'])
-    def logout(self,request):
-          if request.method == 'POST':
-               try:
-                    request.user.auth_token.delete()
-                    return Response(
-                        {'message': 'Successfully logged out.'},
-                        status=status.HTTP_200_OK)
-               except:
-                    return Response(
-                        {'error': 'Logout process donot go well.'},
-                        status=status.HTTP_200_OK)
-                   
+            return redirect('verification')
+    # if form.has_error:
+    #     error = form.errors[0]
+    return render(request, "login.html", {'form':form, "error": error})
 
 
 
+def verification(request):
+    if request.method == "POST":
+        code = request.POST['otp']
+        if code == request.session.code:
+            Customer.objects.create(
+                fullname= request.session.fullname,
+                number= request.session.number,
+                password= request.session.number,
+                is_verified=True,
+            )
+            login(request)
+            return redirect("home")
+    return render(request, "verification.html")
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
-
+def logout_view(request):
+    logout(request)
+    return redirect("home")

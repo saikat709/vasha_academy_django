@@ -14,6 +14,7 @@ from pathlib import Path
 import os
 import cloudinary
 import dj_database_url
+from django.conf.global_settings import AUTH_USER_MODEL
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -45,7 +46,7 @@ INSTALLED_APPS = [
     'course',
     'customer',
     'question',
-    'background_task'
+    'background_task',
 ]
 
 MIDDLEWARE = [
@@ -127,19 +128,13 @@ DATABASES = {
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
+    { 'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator', },
+    { 'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',},
+    { 'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',},
+    { 'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',},
 ]
+
+AUTH_USER_MODEL = 'customer.Customer'
 
 
 # Internationalization
@@ -166,6 +161,8 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
+
+# AUTH_USER_MODEL = "myauths.CustomUser"
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 

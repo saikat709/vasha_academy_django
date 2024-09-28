@@ -1,16 +1,19 @@
-from .models import Profile
+# from .models import Profile
 
 from rest_framework import serializers
 from django.contrib.auth.models import User
+
+from customer.models import Customer
+
 
 class ExamineeSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
     confirm_password=serializers.CharField(write_only=True)
 
     class Meta:
-        model = User
-        fields = ['id','first_name', 'username', 'password', 'confirm_password']  # username is mobile num
-        extra_kwargs = {'password': {'write_only': True}}
+        model = Customer
+        fields = ['id', 'fullname', 'number', 'password']  # username is mobile num
+        extra_kwargs = {'password': {'write_only': True}, 'id': {'read_only':True} }
 
     def validate(self, data):
         if data['password'] != data['confirm_password']:

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+      integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+</head>
+<body>
+    <div id="app">
+        <!-- <h1> Loading exam... </h1> -->
+        <section class="bg-white text-black p-5 text-center">
+            <h1 class='text-xl font-bold mb-2'> Exam Name </h1>
+            <div class='flex flex-col md:flex-row justify-center items-center'>
+                <div>
+                    <div role="tablist" class="tabs tabs-boxed">
+                        <a role="tab" class="tab" :class="{'tab-active': activeTab === 0}" :onclick="()=>{tabChange(0)}" >Total questions</a>
+                        <a role="tab" class="tab" :class="{'tab-active': activeTab === 1}" :onclick="()=>{tabChange(1)}" >Solved Questions</a>
+                        <a role="tab" class="tab" :class="{'tab-active': activeTab === 2}" :onclick="()=>{tabChange(2)}" >Unsolved Questions </a>
+                    </div>
+                    <div class='flex'>
+                        <div>
+                            <h2><i class="fa-regular fa-comment"></i> &nbsp; Text questions </h2>
+                            <div class='p-1'>
+                                <button v-for="i in 10" class="btn btn-outline btn-info m-1" onclick="()=>{activeQuestion=i}">{{i}}</button>
+                            </div>
+                        </div>
+                        <div>
+                            <h2><i class="fa-solid fa-headphones"></i> &nbsp; Audio questions </h2>
+                            <div class='p-1'>
+                                <button v-for="i in 10" class="btn btn-outline btn-info m-1">{{i}}</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="divider divider-primary md:hidden"></div>
+                <div class='flex w-full justify-between md:px-24 p-5 gap-6'>
+                    <div class="flex flex-col  w-1/2">
+                        <h1 class=" text-lg"><Span class="text-bolder text-blue-500">Q. </Span>This is the question. It is shown here.</h1>
+                        <div class="btn mt-4"><i class="fa-solid fa-volume-high"></i> Play </div>
+                        <audio src="" ref="questionAudio" class="hidden"></audio>
+                    </div>
+                    <div class="grid grid-col-2 w-1/2 text-left justify-start gap-2 w-1/2">
+                        <h1 class="bg-blue-300 rounded-box p-2"><span class="font-bold">A. </span>OPTIONS and so on is going on (1)</h1>
+                        <h1 class="bg-blue-300 rounded-box p-2"><span class="font-bold">B. </span> OPTIONS 2 </h1>
+                        <h1><span class="font-bold">C. </span> OPTIONS 2 </h1>
+                        <h1><span class="font-bold">D. </span> OPTIONS 2 </h1>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    <script src="../static/js/exam.js" type="module"></script>
+</body>
+</html>
