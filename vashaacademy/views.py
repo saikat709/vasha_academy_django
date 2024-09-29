@@ -1,18 +1,10 @@
-from django.http import HttpResponse
 from django.shortcuts import render, redirect
-from django.template.defaulttags import url
-
-from course.models import Course
-
 
 def home(request, *args, **kwargs):
     exams = [1, 2, 3, 4]
     lang = request.GET.get('lang', 'bn')
     lang = lang if lang in ('bn', 'en') else 'bn'
-    request.session.lang = lang
-
-    #courses = Course.objects.
-
+    request.session['lang'] = lang
     return render(request, "index.html", {"exams": exams})
 
 

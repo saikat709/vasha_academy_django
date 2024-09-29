@@ -1,75 +1,94 @@
-from re import fullmatch
-
 from django.shortcuts import render, redirect
-from customer.models import Profile, Customer
 from vashaacademy.utils import send_twilio_code
-from .forms import LoginForm
-from .serializers import ExamineeSerializer
-from rest_framework import viewsets,status
-from django.http import HttpResponse
-from rest_framework.response import Response
-from rest_framework.decorators import action
-from django.shortcuts import get_object_or_404
-from django.core.exceptions import ObjectDoesNotExist
-from .import serializers
-from rest_framework.authtoken.models import Token
-# from rest_framework.decorators import lo
-from django.contrib.auth import authenticate, login, logout
-from rest_framework.decorators import  api_view
+from .forms import LoginForm, PasswordResetForm
+from django.contrib.auth import login, logout
+
+from .models import Customer, LoginInfo
+
 
 # Create your views here
 def login_view(request):
     form = LoginForm(request.POST or None)
     error = ""
-    print("LOGIN######33")
-    print(request.method)
-    print(form.is_valid())
-    print(form.errors)
-
+    print("#########1")
     if request.method == "POST" and form.is_valid():
-        fullname = form.cleaned_data['fullname']
         number = form.cleaned_data['number']
         password = form.cleaned_data['password']
+        fullname = form.cleaned_data['fullname']
 
+        print("#########2")
         customer = Customer.objects.filter(number=number).first()
-
         if customer:
-            customer_auth = password == customer.password
-            print(customer_auth)
+            customer_auth = customer.password == password
             if customer_auth:
-                login(request, customer)
-                return redirect("home")
+                if customer.is_verified:
+                    info = LoginInfo(user=customer, using_app=False)
+                    info.save()
+                    login(request, customer)
+                    return redirect("home")
+                else:
+                    code = send_twilio_code()
+                    request.session['code'] = code
+                    return redirect('customer:verification', id = customer.id)
             else:
                 error = "Wrong Password"
         else:
             code = send_twilio_code()
-
-            request.session.code = code
-            request.session.number = number
-            request.session.password = password
-            request.session.fullname = fullname
-            #return render(request, "login.html", {'form': form, 'error': error})
-
-            return redirect('verification')
-    # if form.has_error:
-    #     error = form.errors[0]
+            request.session['code'] = code
+            user = Customer.objects.create_user(
+                number = number,
+                fullname = fullname,
+                password=password
+            )
+            return redirect('customer:verification', id=user.id)
+    elif form.errors != {}:
+        for field, errors in form.errors.items():
+            if errors:
+                error = errors[0]
+                break
     return render(request, "login.html", {'form':form, "error": error})
 
 
+def verification(request, id):
+    error = None
+    session_code = request.session.get('code')
+    if session_code is None:
+        redirect('home')
 
-def verification(request):
     if request.method == "POST":
-        code = request.POST['otp']
-        if code == request.session.code:
-            Customer.objects.create(
-                fullname= request.session.fullname,
-                number= request.session.number,
-                password= request.session.number,
-                is_verified=True,
-            )
-            login(request)
-            return redirect("home")
-    return render(request, "verification.html")
+        code = request.POST['code']
+        if session_code == code:
+            customer = Customer.objects.filter(id=id).first()
+            if customer:
+                password = request.session.get('password')
+                if password:
+                    customer.password = request.session.get('password')
+                    request.session['password'] = None
+                else:
+                    customer.is_verified = True
+                customer.save()
+                login(request, customer)
+                request.session['code'] = None
+                return redirect("home")
+            else:
+                error = "User not found."
+        error = "Provided code does not match"
+    return render(request, "verification.html", {'error': error})
+
+
+def reset_password(request):
+    form = PasswordResetForm(request.POST or None)
+    error = None
+    if form.is_valid():
+        customer = Customer.objects.filter(number = form.cleaned_data['number'] ).first()
+        if customer is not None:
+            request.session['code'] = send_twilio_code()
+            request.session['password']  = form.cleaned_data['password']
+            return redirect('customer:verification', id=customer.id)
+        else:
+            error = "No user found with that number"
+    return render(request, 'reset.html', {'error':error})
+
 
 def logout_view(request):
     logout(request)

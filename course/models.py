@@ -9,7 +9,7 @@ class Exam(models.Model):
     title = models.CharField(max_length=100)
     details = models.CharField(max_length=500, null = True)
     questions = ManyToManyField(Question, related_name="exams")
-
+    duration = models.IntegerField(default=30)
 
 class Course(models.Model):
     title = models.CharField(max_length=100, null=False)
@@ -17,8 +17,7 @@ class Course(models.Model):
     thumbnail = models.FileField(upload_to="thumbnails/")
     is_free = models.BooleanField(default=False)
     exams = models.ManyToManyField(Exam, related_name="courses")
-
-
+    customers = models.ManyToManyField(Customer, related_name="courses", null=True, blank=True)
 
 
 

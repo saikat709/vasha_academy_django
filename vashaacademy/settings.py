@@ -166,11 +166,11 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-CLOUDINARY_URL=""
-cloudinary.config(
-    cloud_name="your cloudinary name",
-    api_key="your cloudinary api key",
-    api_secret="your cloudinary secret key",
-)
-import cloudinary.uploader
-import cloudinary.api
+# CLOUDINARY_URL=""
+# cloudinary.config(
+#     cloud_name="your cloudinary name",
+#     api_key="your cloudinary api key",
+#     api_secret="your cloudinary secret key",
+# )
+# import cloudinary.uploader
+# import cloudinary.api
