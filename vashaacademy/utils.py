@@ -23,11 +23,11 @@ def send_twilio_code():
     #     )
 
     print("Twillio code here....")
-    message = client.messages.create(
-            from_ = "+13343105861",
-            body = 'Msggggg',
-            to = "+8801521771635"
-    )
+    # message = client.messages.create(
+    #         from_ = "+13343105861",
+    #         body = 'Msggggg',
+    #         to = "+8801521771635"
+    # )
     print("Called.....")
     print(verification_code)
     return verification_code

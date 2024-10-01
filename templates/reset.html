@@ -6,6 +6,10 @@
   Vasha Academy - Password reset
 {% endblock %}
 
+{% block extra_style %}
+
+
+{% endblock %}
 
 {% block body %}
 <div class="relative bg-transparent flex min-h-screen px-6 flex-col justify-center overflow-hidden bg-gray-50 py-3">
@@ -28,12 +32,13 @@
         <form action="" method="post">
           {% csrf_token %}
           <div class="flex flex-col mt-3 space-y-5">
-            <div class="flex flex-col gap-2 items-center justify-between mx-auto w-full max-w-xs">
+            <div class="flex flex-col gap-5 items-center justify-between mx-auto w-full max-w-xs">
 
-               <div class="h-12">
-                    <input name="number" maxlength="50" required placeholder="+88017********"
-                       oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
-                       type="number" class="w-full h-full flex flex-col items-center justify-center text-center px-5 outline-none rounded-xl border border-gray-200 text-lg bg-white focus:bg-gray-50 focus:ring-1 ring-blue-700" id="number">
+               <div class="h-10 flex flex-row  w-full gap-2  px-5 ">
+                 {{ form.number }}
+<!--                    <input name="number" maxlength="15" minlength="12" required placeholder="+88017********"-->
+<!--                       oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"-->
+<!--                       type="tel" class="w-full h-full flex flex-col items-center justify-center text-center px-5 outline-none rounded-xl border border-gray-200 text-lg bg-white focus:bg-gray-50 focus:ring-1 ring-blue-700" id="number">-->
                 </div>
                 <div class="h-12">
                     <input name="password" maxlength="6" required placeholder="Password"

@@ -1,10 +1,23 @@
-from .models import Coursetype,Attendcourse
+from .models import Coursetype, Attendcourse, Course, Result
 from rest_framework import serializers
 
-class Coursetypeserializer(serializers.ModelSerializer):
+class CourseSerializer(serializers.ModelSerializer):
     class Meta:
-        model=Coursetype
+        model= Course
         fields='__all__'
+
+
+class ExamSerializer(serializers.ModelSerializer):
+    class Meta:
+        model= Course
+        fields='__all__'
+
+class ResultSerializer(serializers.ModelSerializer):
+    class Meta:
+        model= Result
+        fields='__all__'
+
+
 
 
 class Attendserializer(serializers.ModelSerializer):

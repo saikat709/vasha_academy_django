@@ -5,7 +5,7 @@ from . import view_api, views
 app_name = 'customer'
 
 customer_api = DefaultRouter()
-customer_api.register('profile', view_api.ExamViewset)
+customer_api.register('', view_api.CustomerViewset)
 
 urlpatterns = [
     path('login/', views.login_view, name='login'),

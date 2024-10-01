@@ -3,7 +3,7 @@ import uuid
 from django.contrib.auth.base_user import BaseUserManager
 from django.db import models
 from django.contrib.auth.models import AbstractUser
-from django.db.models import ManyToManyField
+from phonenumber_field.modelfields import PhoneNumberField
 
 
 class CustomerManager(BaseUserManager):
@@ -32,24 +32,14 @@ class CustomerManager(BaseUserManager):
 class Customer(AbstractUser):
     username = models.CharField(max_length=1, null=True, unique=False)
     fullname = models.CharField(max_length=100, null=False, blank=False, unique=False)
-    number = models.CharField(max_length=15, null=False, blank= False, unique=True)
+    number = PhoneNumberField(blank=False, unique=True)
     is_verified = models.BooleanField(default=False, null=False)
-    # courses = ManyToManyField(Course, null=True, blank=True, related_name="customers")
     USERNAME_FIELD = 'number'
     REQUIRED_FIELDS = []
     objects = CustomerManager()
 
     def __str__(self):
-        return f"Customer[{self.number}]"
-
-
-class Profile(models.Model):
-    user = models.OneToOneField(Customer, on_delete=models.CASCADE, related_name='profile')
-    number = models.CharField(max_length=50, null=True)
-    fullname = models.CharField(max_length=100, null=True)
-
-    def __str__(self):
-        return f"Profile[{self.number}]"
+        return f"Customer[{self.fullname} -- {self.number}]"
 
 
 class LoginInfo(models.Model):
@@ -59,3 +49,12 @@ class LoginInfo(models.Model):
 
     def __str__(self):
         return f"LoginInfo[{self.token}]"
+
+
+class Profile(models.Model):
+    user = models.OneToOneField(Customer, on_delete=models.CASCADE, related_name='profile')
+    number = models.CharField(max_length=50, null=True)
+    fullname = models.CharField(max_length=100, null=True)
+
+    def __str__(self):
+        return f"Profile[{self.number}]"

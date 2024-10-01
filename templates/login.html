@@ -41,6 +41,10 @@
                           {% if request.session.lang == 'en' %} Mobile Number {% else %} মোবাইল নাম্বার {% endif %}
                         </label>
                         <input name="number" required class=" w-full text-base px-4 py-2 border  border-gray-300 rounded-lg focus:outline-none focus:border-green-400" type="number" placeholder="+88017********">
+                         <div class="h-10 flex flex-row  w-full gap-2  px-5 ">
+                             {{ form.number }}
+                         </div>
+                </div>
                     </div>
                     <div class="space-y-1">
                         <label class="mb-5 text-sm font-medium text-gray-700 tracking-wide">

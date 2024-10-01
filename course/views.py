@@ -1,7 +1,6 @@
 from django.shortcuts import render,get_object_or_404
 from .models import Coursetype, Attendcourse
 from question.models import UserAnswer
-from .serializer import Coursetypeserializer,Attendserializer
 from rest_framework import viewsets
 from django.contrib.auth.models import User
 from django.utils import timezone
@@ -12,14 +11,10 @@ from rest_framework.decorators import action
 import time
 
 # Create your views here.
-class CourseViewSets(viewsets.ModelViewSet):
-    queryset=Coursetype.objects.all()
-    serializer_class=Coursetypeserializer
-
 
 class AttendenceViewset(viewsets.ModelViewSet):
     queryset=Attendcourse.objects.all()
-    serializer_class=Attendserializer
+    #serializer_class=Attendserializer
 
     @action(detail=True, methods=['post'],permission_classes=[IsAuthenticated])
     def start(self,request,pk):

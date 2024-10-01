@@ -1,14 +1,14 @@
-from django.core.exceptions import ValidationError
 from django import forms
-
-from customer.models import Customer
+from django.core.exceptions import ValidationError
+from phonenumber_field.formfields import PhoneNumberField, SplitPhoneNumberField
 
 
 class LoginForm(forms.Form):
     fullname = forms.CharField(max_length=100)
     password = forms.CharField(max_length=100)
-    number = forms.CharField(max_length=15, validators=[])
+    number = SplitPhoneNumberField()
 
 class PasswordResetForm(forms.Form):
-    number = forms.CharField(max_length=15, validators=[])
+    number = SplitPhoneNumberField()
     password = forms.CharField(max_length=100)
+

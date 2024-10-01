@@ -1,9 +1,16 @@
+from dbm import error
+
 from django.shortcuts import render, redirect
 from vashaacademy.utils import send_twilio_code
 from .forms import LoginForm, PasswordResetForm
 from django.contrib.auth import login, logout
 
 from .models import Customer, LoginInfo
+
+def first_form_error(form):
+    for field, errors in form.errors.items():
+        if errors:
+            return error[0]
 
 
 # Create your views here
@@ -42,10 +49,7 @@ def login_view(request):
             )
             return redirect('customer:verification', id=user.id)
     elif form.errors != {}:
-        for field, errors in form.errors.items():
-            if errors:
-                error = errors[0]
-                break
+        error = first_form_error(form)
     return render(request, "login.html", {'form':form, "error": error})
 
 
@@ -87,7 +91,9 @@ def reset_password(request):
             return redirect('customer:verification', id=customer.id)
         else:
             error = "No user found with that number"
-    return render(request, 'reset.html', {'error':error})
+    elif form.errors != {}:
+        error = first_form_error(form)
+    return render(request, 'reset.html', {'form': form, 'error':error, 'hi':"Saikat"})
 
 
 def logout_view(request):

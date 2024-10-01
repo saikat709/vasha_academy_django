@@ -3,4 +3,4 @@ from .models import Question,UserAnswer
 # Register your models here.
 
 admin.site.register(Question)
-admin.site.register(UserAnswer)
+# admin.site.register(UserAnswer)
