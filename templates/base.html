@@ -22,6 +22,7 @@
       type="text/css"
     />
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <script>
       tailwind.config = {
         theme: {
@@ -116,9 +117,9 @@
                 </li>
                 <li>
                   <a
-                    href="#"
+                    href="{% url 'home' %}#courses"
                     class="hover:text-navbar-hover transition-all ease-in-out duration-200">
-                   {% if request.session.lang == 'en' %} All Exam {% else %} সব পরীক্ষা {% endif %}
+                   {% if request.session.lang == 'en' %} All Courses {% else %} সব কোর্স {% endif %}
                   </a>
                 </li>
                 <li>
@@ -129,14 +130,14 @@
                   </a>
                 </li><li>
                   <a
-                    href="#"
+                    href="{% url 'notice:notice' %}"
                     class="hover:text-navbar-hover transition-all ease-in-out duration-200">
                     {% if request.session.lang == 'en' %}  Notice {% else %} নোটিশ {% endif %}
                   </a>
                 </li>
                 <li>
                   <a
-                    href="#faq"
+                    href="{% url 'home' %}#faq"
                     class="hover:text-navbar-hover transition-all ease-in-out duration-200">
                     {% if request.session.lang == 'en' %}  FAQ {% else %} জিজ্ঞাসা {% endif %}
                   </a>

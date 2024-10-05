@@ -1,69 +1,65 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
-      integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    />
-    <link
-      href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css"
-      rel="stylesheet"
-      type="text/css"
-    />
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-</head>
+{% extends 'base.html' %}
+{% load static %}
+
+
 <body>
+{% block body %}
     <div id="app">
         <!-- <h1> Loading exam... </h1> -->
-        <section class="bg-white text-black p-5 text-center">
-            <h1 class='text-xl font-bold mb-2'> Exam Name </h1>
-            <div class='flex flex-col md:flex-row justify-center items-center'>
+        <section class="bg-white text-black p-5 mt-12 text-center">
+            <h1 class='text-2xl font-bold mb-5'> {{ title }} </h1>
+            <div class='flex flex-col gap-3 md:flex-row justify-center items-center'>
                 <div>
-                    <div role="tablist" class="tabs tabs-boxed">
-                        <a role="tab" class="tab" :class="{'tab-active': activeTab === 0}" :onclick="()=>{tabChange(0)}" >Total questions</a>
-                        <a role="tab" class="tab" :class="{'tab-active': activeTab === 1}" :onclick="()=>{tabChange(1)}" >Solved Questions</a>
-                        <a role="tab" class="tab" :class="{'tab-active': activeTab === 2}" :onclick="()=>{tabChange(2)}" >Unsolved Questions </a>
+                    <div role="tablist" class="tabs tabs-boxed w-full">
+                        <a role="tab" class="tab" :class="{'tab-active': activeTab === 0}" @click="()=>{tabChange(0)}" >Total </a>
+                        <a role="tab" class="tab" :class="{'tab-active': activeTab === 1}" @click="()=>{tabChange(1)}" >Solved </a>
+                        <a role="tab" class="tab" :class="{'tab-active': activeTab === 2}" @click="()=>{tabChange(2)}" >Unsolved </a>
                     </div>
-                    <div class='flex'>
-                        <div>
+                    <div class='flex mt-5 gap-5 w-full' v-show="showList">
+                        <div class="w-1/2">
                             <h2><i class="fa-regular fa-comment"></i> &nbsp; Text questions </h2>
                             <div class='p-1'>
-                                <button v-for="i in 10" class="btn btn-outline btn-info m-1" onclick="()=>{activeQuestion=i}">{{i}}</button>
+                                <button v-if="activeTab===0" v-for="q in activeOthers" :key="q.index*1000" class="btn btn-outline btn-info m-1" :class="{'btn-filled': q.answer}" @click="()=>{activeQuestion=q; console.log(q);}">${q.index}$ no.</button>
+                                <button v-if="activeTab===1" v-for="q in solvedOthers" :key="q.index*1000" class="btn btn-outline btn-info m-1" @click="()=>{activeQuestion=q}">${q.index}$ no.</button>
+                                <button v-if="activeTab===2" v-for="q in unsolvedOthers" :key="q.index*1000" class="btn btn-outline btn-info m-1" @click="()=>{activeQuestion=q}">${q.index}$ no.</button>
                             </div>
                         </div>
-                        <div>
-                            <h2><i class="fa-solid fa-headphones"></i> &nbsp; Audio questions </h2>
+                        <div class="w-1/2">
+                            <h2><i class="fa-solid fa-headphones"></i> &nbsp;Audio questions </h2>
                             <div class='p-1'>
-                                <button v-for="i in 10" class="btn btn-outline btn-info m-1">{{i}}</button>
+                                <button v-if="activeTab===0" v-for="q in activeAudios" :key="q.index" class="btn btn-outline btn-info m-1" @click="()=>{activeQuestion=q}">${q.index}$ no.</button>
+                                <button v-if="activeTab===1" v-for="q in solvedAudios" :key="q.index" class="btn btn-outline btn-info m-1" @click="()=>{activeQuestion=q}">${q.index}$ no.</button>
+                                <button v-if="activeTab===2" v-for="q in unsolvedAudios" :key="q.index" class="btn btn-outline btn-info m-1" @click="()=>{activeQuestion=q}">${q.index}$ no.</button>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="divider divider-primary md:hidden"></div>
-                <div class='flex w-full justify-between md:px-24 p-5 gap-6'>
-                    <div class="flex flex-col  w-1/2">
-                        <h1 class=" text-lg"><Span class="text-bolder text-blue-500">Q. </Span>This is the question. It is shown here.</h1>
-                        <div class="btn mt-4"><i class="fa-solid fa-volume-high"></i> Play </div>
-                        <audio src="" ref="questionAudio" class="hidden"></audio>
+                <div class=" md:px-24 p-5 ">
+                    <div class='flex w-full justify-between gap-6'>
+                        <div class="flex flex-col  w-1/2">
+                            <h1 class=" text-lg"><Span class="text-bolder text-blue-500">${activeQuestion.index}$. </Span>This is the question. It is shown here.</h1>
+                            <div class="btn mt-4" onclick="questionAudio.play()"><i class="fa-solid fa-volume-high"></i> Play </div>
+                            <audio id="questionAudio" src="" ref="questionAudio" class="hidden"></audio>
+                        </div>
+                        <div class="grid grid-col-2 w-1/2 text-left justify-start gap-2 w-1/2">
+                            <h1 :class="{'bg-blue-300 rounded-box p-2': activeQuestion.answer === 'a'}" @click="answer('a')"><span class="font-bold">A. </span>OPTIONS and so on is going on (1)</h1>
+                            <h1 :class="{'bg-blue-300 rounded-box p-2': activeQuestion.answer === 'b'}" @click="answer('b')"><span class="font-bold">B. </span> OPTIONS 2 </h1>
+                            <h1 :class="{'bg-blue-300 rounded-box p-2': activeQuestion.answer === 'c'}" @click="answer('c')"><span class="font-bold">C. </span> OPTIONS 2 </h1>
+                            <h1 :class="{'bg-blue-300 rounded-box p-2': activeQuestion.answer === 'd'}" @click="answer('d')"><span class="font-bold">D. </span> OPTIONS 2 </h1>
+                        </div>
                     </div>
-                    <div class="grid grid-col-2 w-1/2 text-left justify-start gap-2 w-1/2">
-                        <h1 class="bg-blue-300 rounded-box p-2"><span class="font-bold">A. </span>OPTIONS and so on is going on (1)</h1>
-                        <h1 class="bg-blue-300 rounded-box p-2"><span class="font-bold">B. </span> OPTIONS 2 </h1>
-                        <h1><span class="font-bold">C. </span> OPTIONS 2 </h1>
-                        <h1><span class="font-bold">D. </span> OPTIONS 2 </h1>
+                    <div class="flex gap-2 mt-8 justify-between">
+                        <div class="btn mt-4"><i class="fa-solid fa-arrow-left"></i> Previous </div>
+                        <div class="btn mt-4"><i class="fa-solid fa-check"></i> Submit </div>
+                        <div class="btn mt-4"> Next <i class="fa-solid fa-arrow-right"></i> </div>
                     </div>
                 </div>
             </div>
         </section>
     </div>
-    <script src="../static/js/exam.js" type="module"></script>
+    {{ data|json_script:"data" }}
+    <script src="{% static 'js/exam.js' %}" type="module"></script>
+{% endblock %}
 </body>
 </html>

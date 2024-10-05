@@ -1,15 +1,19 @@
 from django.shortcuts import render, redirect
+from course.models import Course
+from notice.models import FAQ
 
 def home(request, *args, **kwargs):
-    exams = [1, 2, 3, 4]
     lang = request.GET.get('lang', 'bn')
     lang = lang if lang in ('bn', 'en') else 'bn'
     request.session['lang'] = lang
-    return render(request, "index.html", {"exams": exams})
 
+    courses = Course.objects.all()
+    # print(courses.first().customers)
 
-def course(request, id):
-    return render(request, "course_details.html", {"exams": [1,1,1,11,1,1,1,1,1,1,1,2,2,2]})
+    faqs = FAQ.objects.all()
 
-def notice(request):
-    return render(request, "notice.html")
+    print(request.user in courses.first().customers.all())
+
+    return render(request, "index.html",
+                  { "exams": [11,1,1,1,1,1,1], 'courses': courses, 'faqs': faqs })
+

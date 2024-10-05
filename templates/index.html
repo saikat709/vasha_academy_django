@@ -28,30 +28,26 @@
         <!-- title  -->
         <h3 class="text-title-text text-3xl lg:text-5xl mb-5 font-black">UBT Exam 2024</h3>
         <!-- course cards -->
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-1 mt-2">
+        <div id="courses" class="grid grid-cols-1 lg:grid-cols-2 gap-1 mt-2">
           <!-- card -->
-            {% for i in exams %}
+            {% for course in courses %}
             <div class="card bg-gray-800 shadow-md p-2 pb-10 mx-5 mb-5">
                 <div class="card-body items-center text-center p-0 mt-4">
                   <div class="relative">
-                <h2 class="card-title text-title-text text-2xl">Course Title</h2>
-                {% if i == 1 %}
+                <h2 class="card-title text-title-text text-2xl">{{ course.title }}</h2>
+                {% if course.is_free %}
                       <p class="text-red-400 text-base absolute top-0 -right-10 font-semibold">Free</p>
                  {% endif %}
                 </div>
-                <p class="text-primary-text">Exam Description</p>
-                <p class="text-primary-text btext-bold">Price: <span class="text-green-500">150</span> Taka </p>
-                <div class="card-actions">
-                    <button
-                        class="bg-navbar-active hover:bg-navbar-hover text-white transition-all ease-in-out duration-200 border-none text-lg px-6 rounded-md py-2"
-                    >
-                    {% if i == 1 %}
-                        See Course
-                    {% else %}
-                        Enroll Now
-                    {% endif %}
+                <p class="text-primary-text">{{ course.deatils }}</p>
+                <p class="text-primary-text btext-bold">Price: <span class="text-green-500">{{ course.price }}</span> Taka </p>
+                <div class="card-actions bg-navbar-active hover:bg-navbar-hover text-white transition-all ease-in-out duration-200 border-none text-lg px-6 rounded-md py-2">
 
-                     </button>
+                    {% if course.is_free or request.user in course.customers.all %}
+                    <a href="{% url 'course:course' 1 %}" class="text-white">See Course</a>
+                    {% else %}
+                    <a href="{% url 'home' %}" class="text-white">Enroll Now</a>
+                     {% endif %}
                 </div>
                 </div>
             </div>
@@ -103,37 +99,43 @@
             <!-- Questions -->
             <div class="rounded-t-none p-2 space-y-2">
               <!-- Question one  -->
+              {% for faq in faqs %}
               <div class="collapse collapse-plus bg-gray-800">
                 <input type="radio" name="my-accordion-3" checked="checked" />
-                <div class="collapse-title text-xl font-medium text-primary-text">How Much Should It take to finish?</div>
+                <div class="collapse-title text-lg font-medium text-primary-text">{% if request.session.lang == 'en' %}  {{ faq.question_english }} {% else %} {{ faq.question_bangla }} {% endif %}</div>
                 <div class="collapse-content">
-                  <p class="text-primary-text/80">9 Months</p>
+                  <p class="text-primary-text/80">{% if request.session.lang == 'en' %}  {{ faq.answer_english }} {% else %} {{ faq.answer_bangla }} {% endif %}</p>
                 </div>
               </div>
+              {% endfor %}
+
+            {% if not faqs %}
+                <p class="text-lg text-gray-400 text-center mt-8"> Currently Empty. </p>
+            {% endif %}
               <!-- Question one  -->
-              <div class="collapse collapse-plus bg-gray-800">
-                <input type="radio" name="my-accordion-3" checked="checked" />
-                <div class="collapse-title text-xl font-medium text-primary-text">How Much Should It take to finish?</div>
-                <div class="collapse-content">
-                  <p class="text-primary-text/80">9 Months</p>
-                </div>
-              </div>
-              <!-- Question Two  -->
-              <div class="collapse collapse-plus bg-gray-800">
-                <input type="radio" name="my-accordion-3" checked="checked" />
-                <div class="collapse-title text-xl font-medium text-primary-text">How Much Should It take to finish?</div>
-                <div class="collapse-content">
-                  <p class="text-primary-text/80">9 Months</p>
-                </div>
-              </div>
-              <!-- Question Two -->
-              <div class="collapse collapse-plus bg-gray-800">
-                <input type="radio" name="my-accordion-3" checked="checked" />
-                <div class="collapse-title text-xl font-medium text-primary-text">How Much Should It take to finish?</div>
-                <div class="collapse-content">
-                  <p class="text-primary-text/80">9 Months</p>
-                </div>
-              </div>
+<!--              <div class="collapse collapse-plus bg-gray-800">-->
+<!--                <input type="radio" name="my-accordion-3" checked="checked" />-->
+<!--                <div class="collapse-title text-xl font-medium text-primary-text">How Much Should It take to finish?</div>-->
+<!--                <div class="collapse-content">-->
+<!--                  <p class="text-primary-text/80">9 Months</p>-->
+<!--                </div>-->
+<!--              </div>-->
+<!--              &lt;!&ndash; Question Two  &ndash;&gt;-->
+<!--              <div class="collapse collapse-plus bg-gray-800">-->
+<!--                <input type="radio" name="my-accordion-3" checked="checked" />-->
+<!--                <div class="collapse-title text-xl font-medium text-primary-text">How Much Should It take to finish?</div>-->
+<!--                <div class="collapse-content">-->
+<!--                  <p class="text-primary-text/80">9 Months</p>-->
+<!--                </div>-->
+<!--              </div>-->
+<!--              &lt;!&ndash; Question Two &ndash;&gt;-->
+<!--              <div class="collapse collapse-plus bg-gray-800">-->
+<!--                <input type="radio" name="my-accordion-3" checked="checked" />-->
+<!--                <div class="collapse-title text-xl font-medium text-primary-text">How Much Should It take to finish?</div>-->
+<!--                <div class="collapse-content">-->
+<!--                  <p class="text-primary-text/80">9 Months</p>-->
+<!--                </div>-->
+<!--              </div>-->
             </div>
           </details>
       </ul>

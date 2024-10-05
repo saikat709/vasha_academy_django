@@ -4,7 +4,7 @@ from question.validators import validate_audio_file_extension, validate_image_fi
 
 # Create your models here.
 
-question_type=( ('audio','Audio'),
+types =( ('audio','Audio'),
                 ('text','Text'),
                 ('image',"Image" ),
                 # ("mixed", "Mixed")
@@ -12,12 +12,14 @@ question_type=( ('audio','Audio'),
 answer_choices = ( ('a', "A"), ('b', 'B'), ('c', 'C'), ('d', 'D'))
 
 class Question(models.Model):
-    question_type = models.CharField(choices=question_type, max_length=50)
+    question_type = models.CharField(choices= types, max_length=50, null=True)
 
     question_text = models.CharField(max_length=200)
     question_audio = models.FileField(blank=True, null=True, upload_to="audios/", validators=[validate_audio_file_extension])
     question_image = models.ImageField(blank=True, null=True, upload_to='images/', validators=[validate_image_file_extension])
 
+    # options_type = models.CharField(choices = types, max_length=50, null=True, blank=True)
+    
     a_text = models.TextField(blank=True, null=True)
     a_image = models.ImageField(blank=True, null=True, upload_to='images/', validators=[validate_image_file_extension])
     a_audio = models.FileField(blank=True, null=True, upload_to="audios/",  validators=[validate_audio_file_extension])
@@ -38,9 +40,10 @@ class Question(models.Model):
 
 
     def __str__(self): 
-        return self.question_text
+        return f"Question[{self.id}--{self.question_text}]"
     
 
+# i am not using this
 class UserAnswer(models.Model):
     question= models.ForeignKey(Question, on_delete=models.CASCADE)
     user= models.ForeignKey(Customer,on_delete=models.CASCADE)

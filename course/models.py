@@ -31,7 +31,7 @@ class Course(models.Model):
 class Result(models.Model):
     exam = ForeignKey(Exam, on_delete=models.CASCADE, related_name='results')
     customer = ForeignKey(Customer, on_delete=models.CASCADE, related_name='results')
-    score = models.IntegerField()
+    score = models.IntegerField(default=0)
 
     def __str__(self):
         return f'Result[{self.customer} -> {self.score}]'

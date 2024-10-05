@@ -35,11 +35,12 @@ INSTALLED_APPS = [
 
     'preventconcurrentlogins',
     "phonenumber_field",
+    'background_task',
 
     'course',
     'customer',
     'question',
-    'background_task',
+    'notice',
 ]
 
 MIDDLEWARE = [
