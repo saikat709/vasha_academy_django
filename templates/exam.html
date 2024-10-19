@@ -15,51 +15,177 @@
                         <a role="tab" class="tab" :class="{'tab-active': activeTab === 1}" @click="()=>{tabChange(1)}" >Solved </a>
                         <a role="tab" class="tab" :class="{'tab-active': activeTab === 2}" @click="()=>{tabChange(2)}" >Unsolved </a>
                     </div>
-                    <div class='flex mt-5 gap-5 w-full' v-show="showList">
+                    <div class='flex mt-5 gap-3 w-full' v-show="showList">
                         <div class="w-1/2">
-                            <h2><i class="fa-regular fa-comment"></i> &nbsp; Text questions </h2>
-                            <div class='p-1'>
-                                <button v-if="activeTab===0" v-for="q in activeOthers" :key="q.index*1000" class="btn btn-outline btn-info m-1" :class="{'btn-filled': q.answer}" @click="()=>{activeQuestion=q; console.log(q);}">${q.index}$ no.</button>
-                                <button v-if="activeTab===1" v-for="q in solvedOthers" :key="q.index*1000" class="btn btn-outline btn-info m-1" @click="()=>{activeQuestion=q}">${q.index}$ no.</button>
-                                <button v-if="activeTab===2" v-for="q in unsolvedOthers" :key="q.index*1000" class="btn btn-outline btn-info m-1" @click="()=>{activeQuestion=q}">${q.index}$ no.</button>
+                            <h2><i class="fa-regular fa-comment"></i> &nbsp;
+                                Text questions
+                            </h2>
+                            <div class='p-1 grid grid-cols-3'>
+                                <button v-if="activeTab===0" v-for="q in activeOthers" :key="q.id"   class="btn btn-info m-1" :class="{'btn-outline': !q.answered }" @click="()=>{activeQuestion=q; console.log(q);}">${q.index}$ no.</button>
+                                <button v-if="activeTab===1" v-for="q in solvedOthers" :key="q.id"   class="btn btn-info m-1" :class="{'btn-outline': !q.answered }"  @click="()=>{activeQuestion=q}">${q.index}$ no.</button>
+                                <button v-if="activeTab===2" v-for="q in unsolvedOthers" :key="q.id" class="btn btn-info m-1" :class="{'btn-outline': !q.answered }" @click="()=>{activeQuestion=q}">${q.index}$ no.</button>
                             </div>
                         </div>
                         <div class="w-1/2">
                             <h2><i class="fa-solid fa-headphones"></i> &nbsp;Audio questions </h2>
-                            <div class='p-1'>
-                                <button v-if="activeTab===0" v-for="q in activeAudios" :key="q.index" class="btn btn-outline btn-info m-1" @click="()=>{activeQuestion=q}">${q.index}$ no.</button>
-                                <button v-if="activeTab===1" v-for="q in solvedAudios" :key="q.index" class="btn btn-outline btn-info m-1" @click="()=>{activeQuestion=q}">${q.index}$ no.</button>
-                                <button v-if="activeTab===2" v-for="q in unsolvedAudios" :key="q.index" class="btn btn-outline btn-info m-1" @click="()=>{activeQuestion=q}">${q.index}$ no.</button>
+                            <div class='p-1 grid grid-cols-3'>
+                                <button v-if="activeTab===0" v-for="q in activeAudios" :key="q.question.id" :class="{'btn-outline': !q.answered }" class="btn btn-info m-1" @click="()=>{activeQuestion=q}">${q.index}$ no.</button>
+                                <button v-if="activeTab===1" v-for="q in solvedAudios" :key="q.question.id" :class="{'btn-outline': !q.answered }" class="btn btn-info m-1" @click="()=>{activeQuestion=q}">${q.index}$ no.</button>
+                                <button v-if="activeTab===2" v-for="q in unsolvedAudios" :key="q.question.id" :class="{'btn-outline': !q.answered }" class="btn btn-info m-1" @click="()=>{activeQuestion=q}">${q.index}$ no.</button>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="divider divider-primary md:hidden"></div>
-                <div class=" md:px-24 p-5 ">
+                <div class=" md:px-12 p-1 ">
                     <div class='flex w-full justify-between gap-6'>
-                        <div class="flex flex-col  w-1/2">
-                            <h1 class=" text-lg"><Span class="text-bolder text-blue-500">${activeQuestion.index}$. </Span>This is the question. It is shown here.</h1>
-                            <div class="btn mt-4" onclick="questionAudio.play()"><i class="fa-solid fa-volume-high"></i> Play </div>
-                            <audio id="questionAudio" src="" ref="questionAudio" class="hidden"></audio>
+                        <div class="flex flex-col" >
+                                <span class="font-bold ml-1">${activeQuestion?.index}$. </span>
+                                <p v-if="activeQuestion.question?.question_text"> ${ activeQuestion.question?.question_text }$ </p>
+                                <p v-if="activeQuestion.question?.question_image">
+                                    <!-- You can open the modal using ID.showModal() method -->
+                                    <button class="btn p-0" onclick="q_my_modal_3.showModal()">
+                                        <img :src="activeQuestion.question?.question_image" width="180">
+                                    </button>
+                                    <dialog id="q_my_modal_3" class="modal">
+                                      <div class="modal-box">
+                                        <form method="dialog">
+                                          <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+                                        </form>
+                                        <img :src="activeQuestion.question?.question_image">
+                                      </div>
+                                    </dialog>
+                                </p>
+                                <div v-if="activeQuestion.question?.question_audio" class="flex">
+                                    <button id="q_audio_btn" class="btn p-1 py-0 px-3 m-2 mt-0 w-12" @click="play('q_audio')"><i class="fa-solid fa-volume-high"></i></button>
+                                    <audio hidden="true" id="q_audio" :src="activeQuestion.question?.question_audio" @ended="disable('q_audio_btn')"></audio>
+                                </div>
                         </div>
-                        <div class="grid grid-col-2 w-1/2 text-left justify-start gap-2 w-1/2">
-                            <h1 :class="{'bg-blue-300 rounded-box p-2': activeQuestion.answer === 'a'}" @click="answer('a')"><span class="font-bold">A. </span>OPTIONS and so on is going on (1)</h1>
-                            <h1 :class="{'bg-blue-300 rounded-box p-2': activeQuestion.answer === 'b'}" @click="answer('b')"><span class="font-bold">B. </span> OPTIONS 2 </h1>
-                            <h1 :class="{'bg-blue-300 rounded-box p-2': activeQuestion.answer === 'c'}" @click="answer('c')"><span class="font-bold">C. </span> OPTIONS 2 </h1>
-                            <h1 :class="{'bg-blue-300 rounded-box p-2': activeQuestion.answer === 'd'}" @click="answer('d')"><span class="font-bold">D. </span> OPTIONS 2 </h1>
+
+                        <!-- OPTIONS -->
+                        <div class="grid w-1/2 text-left justify-start" :class="{'grid-cols-2 gap-6': activeQuestion.question?.options_type !== 'text' }">
+                            <!-- OPTION A-->
+                            <div class="flex" :class="{'bg-blue-300 rounded-box p-2': activeQuestion.answered === 'a'}" @click="answer('a')">
+                                <span class="font-bold">A. </span>
+                                <p v-if="activeQuestion.question?.options_type === 'text'"> ${ activeQuestion.question?.a_text }$ </p>
+                                <p v-if="activeQuestion.question?.options_type === 'image'">
+                                    <!-- You can open the modal using ID.showModal() method -->
+                                    <button class="btn p-0" onclick="a_my_modal_3.showModal()">
+                                        <img :src="activeQuestion.question?.a_image">
+                                    </button>
+                                    <dialog id="a_my_modal_3" class="modal">
+                                      <div class="modal-box">
+                                        <form method="dialog">
+                                          <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+                                        </form>
+                                        <img :src="activeQuestion.question?.a_image">
+                                      </div>
+                                    </dialog>
+                                </p>
+                                <div v-if="activeQuestion.question?.options_type === 'audio'" class="flex">
+                                    <button id="a_audio_btn" class="btn p-1 py-0 px-3 m-2 mt-0 w-12" @click="play('a_audio')"><i class="fa-solid fa-volume-high"></i></button>
+                                    <audio hidden="true" id="a_audio" :src="activeQuestion.question?.a_audio" @ended="disable('a_audio_btn')"></audio>
+                                </div>
+                            </div>
+
+                            <!-- OPTION B-->
+                            <div class="flex" :class="{'bg-blue-300 rounded-box p-2': activeQuestion.answered === 'b'}" @click="answer('b')">
+                                <span class="font-bold">B. </span>
+                                <p v-if="activeQuestion.question?.options_type === 'text'"> ${ activeQuestion.question?.b_text }$ </p>
+                                <p v-if="activeQuestion.question?.options_type === 'image'">
+                                    <!-- You can open the modal using ID.showModal() method -->
+                                    <button class="btn p-0" onclick="b_my_modal_3.showModal()">
+                                        <img :src="activeQuestion.question?.b_image">
+                                    </button>
+                                    <dialog id="b_my_modal_3" class="modal">
+                                      <div class="modal-box">
+                                        <form method="dialog">
+                                          <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+                                        </form>
+                                        <img :src="activeQuestion.question?.a_image">
+                                      </div>
+                                    </dialog>
+                                </p>
+                                <div v-if="activeQuestion.question?.options_type === 'audio'" class="flex">
+                                    <button id="b_audio_btn" class="btn p-1 py-0 px-3 m-2 mt-0 w-12" @click="play('b_audio')"><i class="fa-solid fa-volume-high"></i></button>
+                                    <audio hidden="true" id="b_audio" :src="activeQuestion.question?.a_audio" @ended="disable('b_audio_btn')"></audio>
+                                </div>
+                            </div>
+
+                            <!-- OPTION C-->
+                            <div class="flex" :class="{'bg-blue-300 rounded-box p-2': activeQuestion.answered === 'c'}" @click="answer('c')">
+                                <span class="font-bold">C. </span>
+                                <p v-if="activeQuestion.question?.options_type === 'text'"> ${ activeQuestion.question?.c_text }$ </p>
+                                <p v-if="activeQuestion.question?.options_type === 'image'">
+                                    <!-- You can open the modal using ID.showModal() method -->
+                                    <button class="btn p-0" onclick="c_my_modal_3.showModal()">
+                                        <img :src="activeQuestion.question?.c_image">
+                                    </button>
+                                    <dialog id="c_my_modal_3" class="modal">
+                                      <div class="modal-box">
+                                        <form method="dialog">
+                                          <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+                                        </form>
+                                        <img :src="activeQuestion.question?.c_image">
+                                      </div>
+                                    </dialog>
+                                </p>
+                                <div v-if="activeQuestion.question?.options_type === 'audio'" class="flex">
+                                    <button id="c_audio_btn" class="btn p-1 py-0 px-3 m-2 mt-0 w-12" @click="play('c_audio')"><i class="fa-solid fa-volume-high"></i></button>
+                                    <audio hidden="true" id="c_audio" :src="activeQuestion.question?.a_audio" @ended="disable('c_audio_btn')"></audio>
+                                </div>
+                            </div>
+
+                            <!-- OPTION D-->
+                            <div class="flex" :class="{'bg-blue-300 rounded-box p-2': activeQuestion.answered === 'd'}" @click="answer('d')">
+                                <span class="font-bold">D. </span>
+                                <p v-if="activeQuestion.question?.options_type === 'text'"> ${ activeQuestion.question?.d_text }$ </p>
+                                <p v-if="activeQuestion.question?.options_type === 'image'">
+                                    <!-- You can open the modal using ID.showModal() method -->
+                                    <button class="btn p-0" onclick="d_my_modal_3.showModal()">
+                                        <img :src="activeQuestion.question?.b_image">
+                                    </button>
+                                    <dialog id="d_my_modal_3" class="modal">
+                                      <div class="modal-box">
+                                        <form method="dialog">
+                                          <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+                                        </form>
+                                        <img :src="activeQuestion.question?.d_image">
+                                      </div>
+                                    </dialog>
+                                </p>
+                                <div v-if="activeQuestion.question?.options_type === 'audio'" class="flex">
+                                    <button id="d_audio_btn" class="btn p-1 py-0 px-3 m-2 mt-0 w-12" @click="play('d_audio')"><i class="fa-solid fa-volume-high"></i></button>
+                                    <audio hidden id="d_audio" :src="activeQuestion.question?.a_audio" @ended="disable('d_audio_btn')"></audio>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
-                    <div class="flex gap-2 mt-8 justify-between">
-                        <div class="btn mt-4"><i class="fa-solid fa-arrow-left"></i> Previous </div>
-                        <div class="btn mt-4"><i class="fa-solid fa-check"></i> Submit </div>
-                        <div class="btn mt-4"> Next <i class="fa-solid fa-arrow-right"></i> </div>
+
+                    <div class="flex gap-2 mt-8 w-full justify-between">
+                        <button v-if="activeQuestion.index !== 1" class="btn mt-4" @click="previous()"><i class="fa-solid fa-arrow-left"></i> Previous </button>
+                        <form action="" method="POST" class="btn mt-4 flex" ref="form" @click="form.submit()">
+                            {% csrf_token %}
+                            <i class="fa-solid fa-check"></i>
+                            <p>Submit</p>
+                            <input name="score" :value="mark" hidden>
+                            <input name="exam" :value="examId" hidden>
+                            <input name="customer" value="{{ request.user.id }}" hidden>
+                        </form>
+                        <button v-if="activeQuestion.index !== lastIndex" class="btn mt-4" @click="next()"> Next <i class="fa-solid fa-arrow-right"></i> </button>
                     </div>
                 </div>
             </div>
+
+            <div class="absolute top-14 right-4 bg-amber-300 w-24 rounded-lg p-2">
+                <p class="text-bold">Time left: <br> <span> ${timeLeftStr}$ </span></p>
+            </div>
         </section>
     </div>
-    {{ data|json_script:"data" }}
-    <script src="{% static 'js/exam.js' %}" type="module"></script>
+ {{ data|json_script:"data" }}
+    <script src="{% static 'js/exam_vue_v3.js' %}"></script>
 {% endblock %}
 </body>
 </html>
+

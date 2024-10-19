@@ -8,6 +8,12 @@ from customer.urls import customer_api
 from notice.urls import notice_api
 from .views import home
 
+
+admin.site.site_header = "VashaAcademy Admin Panel"
+admin.site.site_title = "VashaAcademy Admin Panel"
+admin.site.index_title = "Welcome to VashaAcademy admin panel"
+
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', home, name='home'),
@@ -21,9 +27,9 @@ urlpatterns = [
     path('api/course/',include(course_api.urls)),
     path('api/exam/',include(exam_api.urls)),
     path('api/result/',include(result_api.urls)),
-    path('api/notice/',include(notice_api.urls)),
+    path('api/extra/',include(notice_api.urls)),
 ]
 
-# if settings.DEBUG:
-urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
-urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+if settings.DEBUG:
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

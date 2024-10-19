@@ -7,55 +7,64 @@
 
 
 {% block body %}
+<!--  https://media.istockphoto.com/id/1574596562/video/b-roll-hand-of-woman-touching-meadow-in-the-rays-of-the-sunset-summer-female-walks-through.mp4?s=mp4-640x640-is&k=20&c=TMvRwr9vgN8RqDD_GCTsaDCkX78vJTht8_V_nubCLEs="-->
   <br>
   <section>
-      <div class="pt-24 m-auto">
+      <div class="pt-8 m-auto">
+        {% if config.video %}
         <div class="flex justify-center w-full rounded-3xl">
-          <video src="https://media.istockphoto.com/id/1574596562/video/b-roll-hand-of-woman-touching-meadow-in-the-rays-of-the-sunset-summer-female-walks-through.mp4?s=mp4-640x640-is&k=20&c=TMvRwr9vgN8RqDD_GCTsaDCkX78vJTht8_V_nubCLEs="
+            <video src="{{config.video.url}}"
                  class="h-fit w-2/3 rounded-2xl lg:w-[35vw]"
                  title=""
-                 frameborder="0"
-                 autoplay loop muted playsinline
-          > </video>
+                 autoplay loop muted playsinline controls
+            > </video>
         </div>
-        <p class="text-primary-text text-center mt-4 text-sm">This is Vasha Academy. Where you aim to accelerate your learning</p>
+        {% endif %}
+        <p class="text-primary-text text-center mt-4 text-sm">{{ config.video_text }}</p>
       </div>
     <br>
   </section>
 
   <!--  Courses-->
-  <section class="py-10 w-2/3 h-200 lg:h-250 mx-auto text-center pb-15">
+  <section class="py-10 pt-3 w-2/3 h-200 lg:h-250 mx-auto text-center pb-15">
         <!-- title  -->
-        <h3 class="text-title-text text-3xl lg:text-5xl mb-5 font-black">UBT Exam 2024</h3>
+        <h3 class="text-title-text text-3xl lg:text-5xl mb-5 font-black">{{ config.title }}</h3>
         <!-- course cards -->
         <div id="courses" class="grid grid-cols-1 lg:grid-cols-2 gap-1 mt-2">
           <!-- card -->
             {% for course in courses %}
             <div class="card bg-gray-800 shadow-md p-2 pb-10 mx-5 mb-5">
+
+                <img class="h-auto max-w-full mx-auto" src="{{ course.thumbnail.url }}" alt="image description">
+                
                 <div class="card-body items-center text-center p-0 mt-4">
                   <div class="relative">
-                <h2 class="card-title text-title-text text-2xl">{{ course.title }}</h2>
-                {% if course.is_free %}
-                      <p class="text-red-400 text-base absolute top-0 -right-10 font-semibold">Free</p>
-                 {% endif %}
-                </div>
-                <p class="text-primary-text">{{ course.deatils }}</p>
-                <p class="text-primary-text btext-bold">Price: <span class="text-green-500">{{ course.price }}</span> Taka </p>
-                <div class="card-actions bg-navbar-active hover:bg-navbar-hover text-white transition-all ease-in-out duration-200 border-none text-lg px-6 rounded-md py-2">
-
-                    {% if course.is_free or request.user in course.customers.all %}
-                    <a href="{% url 'course:course' 1 %}" class="text-white">See Course</a>
-                    {% else %}
-                    <a href="{% url 'home' %}" class="text-white">Enroll Now</a>
+                    <h2 class="card-title text-title-text text-2xl">{{ course.title }}</h2>
+                    {% if course.is_free %}
+                          <p class="text-red-400 text-base absolute top-0 -right-10 font-semibold">Free</p>
                      {% endif %}
-                </div>
+                    </div>
+                    <p class="text-primary-text">{{ course.deatils }}</p>
+                    <p class="text-primary-text btext-bold">Price: <span class="text-green-500">{{ course.price }}</span> Taka </p>
+                    <div class="card-actions bg-navbar-active hover:bg-navbar-hover text-white transition-all ease-in-out duration-200 border-none text-lg px-6 rounded-md py-2">
+                        {% if course.is_free or request.user in course.customers.all %}
+                            <a href="{% url 'course:course' 1 %}" class="text-white">See Course</a>
+                            {% else %}
+                            <a href="{% url 'home' %}" class="text-white">Enroll Now</a>
+                         {% endif %}
+                    </div>
                 </div>
             </div>
             {% endfor %}
+
+            {% if not  courses %}
+                <p class="text-xl text-gray-500 text-center my-8"> We currently dont have any course available.. </p>
+            {% endif %}
+
         </div>
   </section>
 
-<!-- Get it on -->
+    <!-- Get it on -->
   <section class="flex justify-center">
     <button type="button" class="flex items-center justify-center w-60 text-white bg-black rounded-lg h-14">
         <div class="mr-3">
@@ -86,7 +95,6 @@
         </div>
       </button>
 </section>
-
 
   <!--  FAQ   -->
   <section id="faq" class="py-10 mx-auto md:px-24 md:mx-24">
@@ -141,7 +149,8 @@
       </ul>
     </section>
 
-    <!-- Payment Section -->
+  <!-- Payment Section -->
+  <hr class="w-4/5 mb-6 mx-auto">
   <section>
     <h3 class="text-title-text text-xl text-center lg:text-2xl font-bold mb-5">
         {% if request.session.lang == 'en' %} Payment Methods {% else %} পেমেন্ট মাধ্যম {% endif %}
@@ -154,7 +163,7 @@
         <img src="{% static 'images/Nagad-Logo.wine.svg' %}" alt="Nagad" class="w-20 bg-slate-500 rounded-lg">
       </a>
       <a>
-        <img src="{% static 'images/PayPal-Logo.wine.svg' %}" alt="" class="w-20 bg-slate-500 rounded-lg">
+        <img src="{% static 'images/visa-card.png' %}" alt="" class="w-20 rounded-lg">
       </a>
     </div>
   </section>

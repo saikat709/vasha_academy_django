@@ -7,7 +7,7 @@ class CustomerSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Customer
-        fields = ['id', 'fullname', 'number', 'password']  # username is mobile num
+        fields = ['id', 'fullname', 'number', 'password', 'is_verified']  # username is mobile num
         extra_kwargs = {'password': {'write_only': True}, 'id': {'read_only':True} }
 
 

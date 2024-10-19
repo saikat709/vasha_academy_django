@@ -1,11 +1,30 @@
 from pathlib import Path
 import os
-# import cloudinary
-# import dj_database_url
-from django.conf.global_settings import AUTH_USER_MODEL
+
+import cloudinary.uploader
+import cloudinary.api
+import cloudinary
+
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': 'djqlxt6at',
+    'API_KEY': '221474493174644',
+    'API_SECRET': 'xbaElSG27zpFTNYlUTCoR-5eKRU',
+    'STATICFILES_MANIFEST_ROOT': os.path.join(BASE_DIR, '/')
+}
+
+
+cloudinary.config(
+    CLOUD_NAME =  'djqlxt6at',
+    API_KEY = '221474493174644',
+    API_SECRET = 'xbaElSG27zpFTNYlUTCoR-5eKRU',
+    STATICFILES_MANIFEST_ROOT = os.path.join(BASE_DIR, '/')
+)
 
 
 # Quick-start development settings - unsuitable for production
@@ -28,7 +47,10 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+
     'django.contrib.staticfiles',
+    'cloudinary_storage',
+    'cloudinary',
 
     'rest_framework',
     'rest_framework.authtoken',
@@ -61,7 +83,9 @@ ROOT_URLCONF = 'vashaacademy.urls'
 CSRF_TRUSTED_ORIGINS = [
     'http://127.0.0.1',
     'http://localhost',
-    'https://homeper.onrender.com'
+    # 'https://homeper.onrender.com',
+    'https://www.vashaacademy.com'
+
 ]
 
 CORS_ALLOW_ALL_ORIGINS = True
@@ -106,17 +130,24 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'vashaacademy.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
 DATABASES = {
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.sqlite3',
+    #     'NAME': BASE_DIR / 'db.sqlite3',
+    # }
+
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': 'vashaaca_main_db',
+        # 'USER': 'vashaaca_main_user',
+        # 'PASSWORD': 'p@SsWrD!17#',
+        # 'HOST':'vashaacademy.com', # 109.70.148.32
+        # 'PORT':'3306',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
@@ -130,18 +161,14 @@ AUTH_PASSWORD_VALIDATORS = [
 
 AUTH_USER_MODEL = 'customer.Customer'
 
-
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-
-    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': [ ],
 }
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
-
 TIME_ZONE = 'UTC'
 
 USE_I18N = True
@@ -153,17 +180,20 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static/'),
 )
 STATIC_ROOT = os.path.join(BASE_DIR, 'static/root')  # can not use root and static files in the same folder
+STATICFILES_STORAGE = 'cloudinary_storage.storage.StaticHashedCloudinaryStorage'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, MEDIA_URL)
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# CLOUDINARY_URL=""
-# cloudinary.config(
-#     cloud_name="your cloudinary name",
-#     api_key="your cloudinary api key",
-#     api_secret="your cloudinary secret key",
-# )
-# import cloudinary.uploader
-# import cloudinary.api
+
+
+# Email Settings
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.your-email-provider.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+# EMAIL_HOST_USER = 'your-email@example.com'
+# EMAIL_HOST_PASSWORD = 'your-email-App-password'

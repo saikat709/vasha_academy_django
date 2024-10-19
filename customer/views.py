@@ -1,56 +1,58 @@
-from dbm import error
-
 from django.shortcuts import render, redirect
-from vashaacademy.utils import send_twilio_code
-from .forms import LoginForm, PasswordResetForm
-from django.contrib.auth import login, logout
+from vashaacademy.utils import send_otp_code
+from .forms import LoginForm, PasswordResetForm, UpdateForm
+from django.contrib.auth import login, logout, authenticate
 
 from .models import Customer, LoginInfo
 
 def first_form_error(form):
     for field, errors in form.errors.items():
         if errors:
-            return error[0]
-
+            return errors[0]
 
 # Create your views here
 def login_view(request):
     form = LoginForm(request.POST or None)
     error = ""
-    print("#########1")
-    if request.method == "POST" and form.is_valid():
-        number = form.cleaned_data['number']
-        password = form.cleaned_data['password']
-        fullname = form.cleaned_data['fullname']
+    is_email = request.GET.get('is_email') == 'true'
 
-        print("#########2")
-        customer = Customer.objects.filter(number=number).first()
+    if request.method == "POST" and form.is_valid():
+        print(form.cleaned_data)
+        username = form.cleaned_data['username']
+        username = "+880" + username if not is_email else username
+        password = form.cleaned_data['password']
+        name = form.cleaned_data['name']
+
+        customer = Customer.objects.filter(username=username).first()
         if customer:
-            customer_auth = customer.password == password
+            customer_auth = authenticate(username=username, password=password) # customer.password == password
             if customer_auth:
                 if customer.is_verified:
-                    info = LoginInfo(user=customer, using_app=False)
-                    info.save()
+                    # info = LoginInfo(user=customer, using_app=False)
+                    # info.save()
                     login(request, customer)
                     return redirect("home")
                 else:
-                    code = send_twilio_code()
+                    code = send_otp_code()
                     request.session['code'] = code
                     return redirect('customer:verification', id = customer.id)
             else:
                 error = "Wrong Password"
         else:
-            code = send_twilio_code()
+            code = send_otp_code(sent_to=username, is_email=is_email)
             request.session['code'] = code
             user = Customer.objects.create_user(
-                number = number,
-                fullname = fullname,
-                password=password
+                username=username,
+                name = name,
+                password=password,
+                is_email = is_email
             )
+            user.save()
             return redirect('customer:verification', id=user.id)
     elif form.errors != {}:
-        error = first_form_error(form)
-    return render(request, "login.html", {'form':form, "error": error})
+        # error = first_form_error(form)
+        error = str(form.errors)
+    return render(request, "login.html", {'form':form, "error": error, 'is_email': is_email})
 
 
 def verification(request, id):
@@ -84,17 +86,26 @@ def reset_password(request):
     form = PasswordResetForm(request.POST or None)
     error = None
     if form.is_valid():
-        customer = Customer.objects.filter(number = form.cleaned_data['number'] ).first()
+        username = form.cleaned_data['username']
+        customer = Customer.objects.filter(username = username ).first()
         if customer is not None:
-            request.session['code'] = send_twilio_code()
+            request.session['code'] = send_otp_code(sent_to=username, is_email=customer.is_email)
             request.session['password']  = form.cleaned_data['password']
             return redirect('customer:verification', id=customer.id)
         else:
             error = "No user found with that number"
     elif form.errors != {}:
-        error = first_form_error(form)
+        error = str(form.errors)
     return render(request, 'reset.html', {'form': form, 'error':error, 'hi':"Saikat"})
 
+
+def update(request):
+    if request.method == "POST":
+        form = UpdateForm(request.POST or None, request.FILES, instance=request.user)
+        print(form.errors)
+        if form.is_valid(): form.save()
+        pass
+    return redirect("home")
 
 def logout_view(request):
     logout(request)

@@ -10,7 +10,7 @@ class ExamAdmin(ModelAdmin):
     filter_horizontal = ('questions',)
 
 class CourseAdmin(ModelAdmin):
-    filter_horizontal = ('exams', 'customers')
+    filter_horizontal = ('exams',) #  "enrollments")
 
 
 admin.site.register(Course, CourseAdmin)

@@ -1,10 +1,12 @@
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, get_object_or_404
-from .models import Coursetype, Attendcourse, Course, Result
-
+from django.shortcuts import render, get_object_or_404, redirect
+from django.http import  Http404
+from .forms import ResultForm
+from .models import Course, Result, Exam
+from .serializer import QuestionSerializer
 
 # Create your views here.
-@login_required(login_url="/login")
+@login_required(login_url="/customer/login")
 def course(request, id, *args, **kwargs):
     course_ins = Course.objects.filter(id=id).first()
     title = course_ins.title
@@ -18,20 +20,32 @@ def course(request, id, *args, **kwargs):
           context = { 'title': title, 'course_res': course_res.items() }
         )
 
-
-@login_required(login_url="/login")
+@login_required(login_url="/customer/login")
 def exam(request, id, *args, **kwargs):
-    title = "Title"
-    questions = [1,1,1,1,1]
-    return render(request, "exam.html",
-                  context = {'title': title,
-                             'data': {
-                                'id': 91,
-                                'questions': questions
-                            }
-                  }
-    )
+    form = ResultForm(request.POST or None)
+    if form.is_valid():
+        request.session['finished'] = True
+        ins = form.save()
+        return redirect("course:result", id=ins.id)
+    else:
+        exam = get_object_or_404(Exam, id=id)
+        questions = QuestionSerializer(exam.questions, many=True).data
+        return render(request, "exam.html",
+                      context = {'title': exam.title,
+                                 'data': { 'id': exam.id,
+                                        'duration': exam.duration,
+                                        'questions': questions }
+                      }
+        )
 
+@login_required(login_url="/customer/login")
+def result(request,id,  *args, **kwargs):
+    finished = request.session.get('finished')
+    if not finished:
+        return Http404()
+    request.session['finished'] = None
+    result = get_object_or_404(Result, id=id)
+    return render(request, "result.html", {'score': result.score })
 
 
 

@@ -1,40 +1,40 @@
 from django.db import models
+
 from customer.models import Customer
 from question.validators import validate_audio_file_extension, validate_image_file_extension
+from vashaacademy.utils import get_unique_filename
 
 # Create your models here.
-
 types =( ('audio','Audio'),
                 ('text','Text'),
                 ('image',"Image" ),
-                # ("mixed", "Mixed")
             )
 answer_choices = ( ('a', "A"), ('b', 'B'), ('c', 'C'), ('d', 'D'))
 
 class Question(models.Model):
-    question_type = models.CharField(choices= types, max_length=50, null=True)
+    question_type = models.CharField(choices= types, max_length=50,)
 
-    question_text = models.CharField(max_length=200)
-    question_audio = models.FileField(blank=True, null=True, upload_to="audios/", validators=[validate_audio_file_extension])
-    question_image = models.ImageField(blank=True, null=True, upload_to='images/', validators=[validate_image_file_extension])
+    question_text = models.TextField(max_length=500, blank=True, null=True,)
+    question_audio = models.FileField(blank=True, null=True, upload_to=get_unique_filename, validators=[validate_audio_file_extension])
+    question_image = models.ImageField(blank=True, null=True, upload_to=get_unique_filename, validators=[validate_image_file_extension])
 
-    # options_type = models.CharField(choices = types, max_length=50, null=True, blank=True)
+    options_type = models.CharField(choices = types, max_length=50)
     
     a_text = models.TextField(blank=True, null=True)
-    a_image = models.ImageField(blank=True, null=True, upload_to='images/', validators=[validate_image_file_extension])
-    a_audio = models.FileField(blank=True, null=True, upload_to="audios/",  validators=[validate_audio_file_extension])
+    a_image = models.ImageField(blank=True, null=True, upload_to=get_unique_filename, validators=[validate_image_file_extension])
+    a_audio = models.FileField(blank=True, null=True, upload_to=get_unique_filename,  validators=[validate_audio_file_extension])
 
     b_text = models.TextField(blank=True, null=True)
-    b_image = models.ImageField(blank=True, null=True, upload_to='images/', validators=[validate_image_file_extension])
-    b_audio = models.FileField(blank=True, null=True, upload_to="audios/",  validators=[validate_audio_file_extension])
+    b_image = models.ImageField(blank=True, null=True, upload_to=get_unique_filename, validators=[validate_image_file_extension])
+    b_audio = models.FileField(blank=True, null=True, upload_to=get_unique_filename,  validators=[validate_audio_file_extension])
 
     c_text = models.TextField(blank=True, null=True)
-    c_image = models.ImageField(blank=True, null=True, upload_to='images/')
-    c_audio = models.FileField(blank=True, null=True, upload_to="audios/",  validators=[validate_audio_file_extension])
+    c_image = models.ImageField(blank=True, null=True, upload_to=get_unique_filename)
+    c_audio = models.FileField(blank=True, null=True, upload_to=get_unique_filename,  validators=[validate_audio_file_extension])
 
     d_text = models.TextField(blank=True, null=True)
-    d_image = models.ImageField(blank=True, null=True, upload_to='images/', validators=[validate_image_file_extension])
-    d_audio = models.FileField(blank=True, null=True, upload_to="audios/", validators=[validate_audio_file_extension])
+    d_image = models.ImageField(blank=True, null=True, upload_to=get_unique_filename, validators=[validate_image_file_extension])
+    d_audio = models.FileField(blank=True, null=True, upload_to=get_unique_filename, validators=[validate_audio_file_extension])
 
     ans = models.CharField(max_length=1, choices=answer_choices)
 

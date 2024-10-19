@@ -1,6 +1,6 @@
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
-from rest_framework import status, viewsets
+from rest_framework import viewsets
 from notice.models import Notice, FAQ, PdfBooks
 from notice.serializers import NoticeSerializer, FaqSerializer, PdfSerializer
 

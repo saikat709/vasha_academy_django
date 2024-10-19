@@ -9,6 +9,7 @@ customer_api.register('', view_api.CustomerViewset)
 
 urlpatterns = [
     path('login/', views.login_view, name='login'),
+    path('update/', views.update, name='update'),
     path('logout/', views.logout_view, name='logout'),
     path('reset/', views.reset_password, name='reset'),
     path('verification/<int:id>', views.verification, name='verification'),

@@ -1,3 +1,4 @@
+from django.contrib.auth import authenticate
 from rest_framework import viewsets, status
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.decorators import action
@@ -6,6 +7,7 @@ from rest_framework.response import Response
 
 from customer.models import Customer, LoginInfo
 from customer.serializers import CustomerSerializer
+from vashaacademy.utils import send_otp_code
 
 
 class CustomerViewset(viewsets.ModelViewSet):
@@ -17,44 +19,57 @@ class CustomerViewset(viewsets.ModelViewSet):
     @action(methods=["GET",], detail=False )
     def exists(self, request):
         exists = False
-        number = self.request.query_params.get('number')
-        user = Customer.objects.filter(number = number).first()
+        number = self.request.query_params.get('number').strip()
+        number = "+"+number if not number.startswith("+") else number
+        print(number)
+        user = Customer.objects.filter(number=number).first()
+        print(user)
         if user is not None:
-            exists = True
+           exists = True
         return Response(
             data= exists,
             status=status.HTTP_200_OK
         )
 
+    @action(methods=["GET", ], detail=False, url_path="getbynumber/(?P<number>[^/.]+)")
+    def getbynumber(self, request, number):
+        # number = "+"+number if not number.startswith("+") else number
+        print(number)
+        user = Customer.objects.filter(number=number).first()
+        user = CustomerSerializer(user).data
+        return Response(
+            data=user, status=status.HTTP_200_OK
+        )
+
     @action(methods=["GET"], detail=False)
     def authenticate(self, request):
-        ok = False
-        user = Customer.objects.filter(id = self.request.query_params.get('id')).first()
-        print(user)
-        info = LoginInfo.objects.filter(user=user).first()
-        print(info)
-        if info is not None:
-            ok = True
+        token = self.request.query_params.get('token')
+        info = LoginInfo.objects.filter(token=token).first()
+        customer = CustomerSerializer(info.user)
         return Response(
-            data = ok,
+            data = customer.data,
             status = status.HTTP_200_OK
         )
 
+    @action(methods=["POST"], detail=False)
+    def sendotp(self, request):
+        otp = send_otp_code()
+        return Response(
+            data = otp,
+            status = status.HTTP_200_OK,
+        )
 
-    @action(detail=False,methods=['Post'])
+    @action(detail=False,methods=['POST'])
     def login(self, request):
         number = self.request.data.get('number')
         password = self.request.data.get('password')
-        print(number, password)
-
         user = Customer.objects.filter(number = number).first()
         print(user)
-        if user is not None and user.password == password:
+        if user is not None and authenticate(username=number, password=password):
             info = LoginInfo(user= user)
             info.save()
-
             return Response(
-                data = info.token(),
+                data = info.token,
                 status = status.HTTP_200_OK
             )
         return Response(
@@ -64,20 +79,19 @@ class CustomerViewset(viewsets.ModelViewSet):
 
 
     @action(detail=False, methods=['Post'])
-    def logout(self,request):
-        id = self.request.query_params.get('id')
-        user = Customer.objects.filter(id=id).first()
-        info =  LoginInfo.objects.filter(user=user).first()
-
+    def logout(self, request):
+        token = self.request.query_params.get('token')
+        info =  LoginInfo.objects.filter(token=token).first()
+        print(info)
         if info:
             info.delete()
+            info.save()
+            print(info)
 
         return Response(
             data = 'Successfully logged out.',
             status= status.HTTP_200_OK
         )
-
-
 
 
         # @action(detail=False, methods=['Post'])

@@ -1,10 +1,12 @@
+from django.conf.global_settings import AUTH_USER_MODEL
 from django.contrib import admin
-from .models import Customer
+
+from customer.models import Customer
 
 
 class CustomerAdmin(admin.ModelAdmin):
-    list_display = ("fullname", "number", "is_verified")
-    fields = ("fullname", "number", "password", "is_verified" )
+    list_display = ("name", "username", "is_verified", "is_email")
+    fields = ("picture", "name", "username", "password", "is_verified", "is_email" )
     #form = LoginForm
     #filter_horizontal = ('courses',)
 

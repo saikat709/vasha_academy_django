@@ -5,8 +5,8 @@ from .import views
 from rest_framework.routers import DefaultRouter
 
 router = DefaultRouter()
-router.register('make',views.QuestionViewset)
-router.register('answer',views.UserAnswerViewset)
+router.register('',views.QuestionViewset)
+# router.register('answer',views.UserAnswerViewset)
 
 
 
