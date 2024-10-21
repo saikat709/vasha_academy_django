@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from notice.models import Notice, FAQ, PdfBooks
+from notice.models import Notice, FAQ, PdfBook
 
 
 class NoticeSerializer(serializers.ModelSerializer):
@@ -16,5 +16,5 @@ class FaqSerializer(serializers.ModelSerializer):
 
 class PdfSerializer(serializers.ModelSerializer):
     class Meta:
-        model = PdfBooks
+        model = PdfBook
         fields = '__all__'

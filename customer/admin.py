@@ -5,8 +5,8 @@ from customer.models import Customer
 
 
 class CustomerAdmin(admin.ModelAdmin):
-    list_display = ("name", "username", "is_verified", "is_email")
-    fields = ("picture", "name", "username", "password", "is_verified", "is_email" )
+    list_display = ("name", "username", "is_superuser", "is_verified", "is_email")
+    fields = ("picture", "name", "username", "password", "is_superuser",  "is_verified", "is_email" )
     #form = LoginForm
     #filter_horizontal = ('courses',)
 

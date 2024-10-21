@@ -65,13 +65,13 @@
                         <!-- OPTIONS -->
                         <div class="grid w-1/2 text-left justify-start" :class="{'grid-cols-2 gap-6': activeQuestion.question?.options_type !== 'text' }">
                             <!-- OPTION A-->
-                            <div class="flex" :class="{'bg-blue-300 rounded-box p-2': activeQuestion.answered === 'a'}" @click="answer('a')">
-                                <span class="font-bold">A. </span>
+                            <div class="flex">
+                                <span class="font-bold inline-block w-8 h-8 border-2 border-sky-500 rounded-box text-center" @click="answer('a')" :class="{'bg-blue-600 text-white': activeQuestion.answered === 'a'}">1. </span>
                                 <p v-if="activeQuestion.question?.options_type === 'text'"> ${ activeQuestion.question?.a_text }$ </p>
                                 <p v-if="activeQuestion.question?.options_type === 'image'">
                                     <!-- You can open the modal using ID.showModal() method -->
                                     <button class="btn p-0" onclick="a_my_modal_3.showModal()">
-                                        <img :src="activeQuestion.question?.a_image">
+                                        <img :src="activeQuestion.question?.a_image" width="120">
                                     </button>
                                     <dialog id="a_my_modal_3" class="modal">
                                       <div class="modal-box">
@@ -89,13 +89,13 @@
                             </div>
 
                             <!-- OPTION B-->
-                            <div class="flex" :class="{'bg-blue-300 rounded-box p-2': activeQuestion.answered === 'b'}" @click="answer('b')">
-                                <span class="font-bold">B. </span>
+                            <div class="flex">
+                                <span class="font-bold inline-block w-8 h-8 border-2 border-sky-500 rounded-box text-center" @click="answer('b')" :class="{'bg-blue-600 text-white': activeQuestion.answered === 'b'}">2. </span>
                                 <p v-if="activeQuestion.question?.options_type === 'text'"> ${ activeQuestion.question?.b_text }$ </p>
                                 <p v-if="activeQuestion.question?.options_type === 'image'">
                                     <!-- You can open the modal using ID.showModal() method -->
                                     <button class="btn p-0" onclick="b_my_modal_3.showModal()">
-                                        <img :src="activeQuestion.question?.b_image">
+                                        <img :src="activeQuestion.question?.b_image"  width="120">
                                     </button>
                                     <dialog id="b_my_modal_3" class="modal">
                                       <div class="modal-box">
@@ -113,13 +113,13 @@
                             </div>
 
                             <!-- OPTION C-->
-                            <div class="flex" :class="{'bg-blue-300 rounded-box p-2': activeQuestion.answered === 'c'}" @click="answer('c')">
-                                <span class="font-bold">C. </span>
+                            <div class="flex">
+                                <span class="font-bold inline-block w-8 h-8 border-2 border-sky-500 rounded-box text-center" @click="answer('c')" :class="{'bg-blue-600 text-white': activeQuestion.answered === 'c'}">3. </span>
                                 <p v-if="activeQuestion.question?.options_type === 'text'"> ${ activeQuestion.question?.c_text }$ </p>
                                 <p v-if="activeQuestion.question?.options_type === 'image'">
                                     <!-- You can open the modal using ID.showModal() method -->
                                     <button class="btn p-0" onclick="c_my_modal_3.showModal()">
-                                        <img :src="activeQuestion.question?.c_image">
+                                        <img :src="activeQuestion.question?.c_image" width="120">
                                     </button>
                                     <dialog id="c_my_modal_3" class="modal">
                                       <div class="modal-box">
@@ -137,13 +137,13 @@
                             </div>
 
                             <!-- OPTION D-->
-                            <div class="flex" :class="{'bg-blue-300 rounded-box p-2': activeQuestion.answered === 'd'}" @click="answer('d')">
-                                <span class="font-bold">D. </span>
+                            <div class="flex" >
+                                <span class="font-bold inline-block w-8 h-8 border-2 border-sky-500 rounded-box text-center" @click="answer('d')" :class="{'bg-blue-600 text-white': activeQuestion.answered === 'd'}">4. </span>
                                 <p v-if="activeQuestion.question?.options_type === 'text'"> ${ activeQuestion.question?.d_text }$ </p>
                                 <p v-if="activeQuestion.question?.options_type === 'image'">
                                     <!-- You can open the modal using ID.showModal() method -->
                                     <button class="btn p-0" onclick="d_my_modal_3.showModal()">
-                                        <img :src="activeQuestion.question?.b_image">
+                                        <img :src="activeQuestion.question?.b_image" width="120">
                                     </button>
                                     <dialog id="d_my_modal_3" class="modal">
                                       <div class="modal-box">

@@ -23,7 +23,7 @@ class FAQ(models.Model):
         return f"Faq[{self.id}--{self.question_english}]"
 
 
-class PdfBooks(models.Model):
+class PdfBook(models.Model):
     title = models.CharField(max_length=250)
     pdf = models.FileField(upload_to=get_unique_filename, validators = [validate_pdf_file_extension] )
 

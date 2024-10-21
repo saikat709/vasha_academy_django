@@ -1,7 +1,7 @@
 from django.urls import path,include
 from rest_framework.routers import DefaultRouter
 from .view_api import CourseViewSets, ExamViewSets, ResultViewSets
-from .views import course, exam, result
+from .views import course, exam, result, payment_success, payment_failed, initiate_payment
 
 course_api = DefaultRouter()
 course_api.register('', CourseViewSets)
@@ -18,4 +18,7 @@ urlpatterns = [
     path("<int:id>/", course, name='course'),
     path("result/<int:id>", result, name='result'),
     path("exam/<int:id>/", exam, name='exam'),
+    path("initiate-payment/<int:course_id>", initiate_payment, name='initiate_payment'),
+    path("payment-successful/<int:user_id>/<int:course_id>", payment_success, name='payment_successful'),
+    path("payment-failed", payment_failed, name='payment_failed'),
 ]

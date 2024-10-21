@@ -9,7 +9,7 @@ types =( ('audio','Audio'),
                 ('text','Text'),
                 ('image',"Image" ),
             )
-answer_choices = ( ('a', "A"), ('b', 'B'), ('c', 'C'), ('d', 'D'))
+answer_choices = ( ('a', "1"), ('b', '2'), ('c', '3'), ('d', '4'))
 
 class Question(models.Model):
     question_type = models.CharField(choices= types, max_length=50,)

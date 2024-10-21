@@ -1,8 +1,7 @@
 from datetime import timedelta
+from uuid import uuid1
 
-from django.conf.global_settings import AUTH_USER_MODEL
-from django.core.validators import MaxValueValidator, MinValueValidator
-from django.template.defaultfilters import default
+from django.core.validators import MaxValueValidator, MinValueValidator, validate_image_file_extension
 from django.utils import timezone
 
 from django.db import models
@@ -22,17 +21,17 @@ class Exam(models.Model):
     def __str__(self):
         return f'Exam[{self.title}]!!'
 
+
 class Course(models.Model):
     title = models.CharField(max_length=100, null=False)
     price = models.IntegerField(null=False)
-    thumbnail = models.FileField(upload_to=get_unique_filename)
+    thumbnail = models.FileField(upload_to=get_unique_filename, validators=[validate_image_file_extension])
     is_free = models.BooleanField(default=False)
     discount = models.IntegerField(default=0, validators=[MaxValueValidator(100), MinValueValidator(0)])
     exams = models.ManyToManyField(Exam, related_name="courses", blank=True)
-    # customers = models.ManyToManyField(Customer, related_name="courses", blank=True)
 
     def __str__(self):
-        return f'[Course{self.title}, {self.price}]'
+        return f'[Course-{self.id}, {self.title}, {self.price}]'
 
 
 class Result(models.Model):
@@ -48,6 +47,8 @@ class Enrollment(models.Model):
     added_at = models.DateTimeField(auto_now=True)
     course = ForeignKey(Course, on_delete=models.CASCADE, related_name="enrollments")
     customer = ForeignKey(Customer, on_delete=models.CASCADE, related_name="enrollments")
+    amount = models.IntegerField(default=100)
+    tran_id = models.CharField(max_length=20, default=uuid1())
 
     def __str__(self):
         return f"Enrollment[{self.id}-{self.customer}-{self.course}"
@@ -56,7 +57,7 @@ class Enrollment(models.Model):
     def has_validity(self):
         time_now = timezone.now()
         valid_till = timezone.localtime(self.added_at) + timedelta(days=6*30)
-        return valid_till <= time_now
+        return valid_till >= time_now
 
 
 # don't know what are these

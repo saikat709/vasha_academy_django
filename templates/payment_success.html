@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block body %}
+    <div class="flex p-5 md:px-12 gap-3 flex-col md:flex-row justify-center items-center mx-auto w-3/4 md:2/5 mt-12 bg-gray-400 rounded-lg">
+        <img src="{% static 'images/check.png' %}" alt="check image" class="w-24 md:w-26 h-fit">
+        <h1  class="w-full text-center text-white text-2xl">Successfully enrolled course: {{course.title}}. ( but not implemented gateway yet)</h1>
+        <a href="{% url 'course:course' course.id %}" class="btn btn-sm btn-primary">See Course</a>
+        <a href="{% url 'home' %}" class="btn btn-sm">Go Home</a>
+    </div>
+{% endblock %}

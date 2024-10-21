@@ -36,7 +36,8 @@ SECRET_KEY = 'django-insecure-=^$8q#%gq66s(!&org4r)0j+yi&ieuw52i)q9l^7b9#^bp*6sa
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+# ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -76,7 +77,6 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'preventconcurrentlogins.middleware.PreventConcurrentLoginsMiddleware',
 ]
-ALLOWED_HOSTS = ["*"]
 
 ROOT_URLCONF = 'vashaacademy.urls'
 
@@ -84,8 +84,9 @@ CSRF_TRUSTED_ORIGINS = [
     'http://127.0.0.1',
     'http://localhost',
     # 'https://homeper.onrender.com',
-    'https://www.vashaacademy.com'
-
+    'https://www.vashaacademy.com',
+    'https://sandbox.aamarpay.com',
+    'https://secure.aamarpay.com',
 ]
 
 CORS_ALLOW_ALL_ORIGINS = True
@@ -99,6 +100,7 @@ CORS_ALLOW_METHODS = [
     'POST',
     'PUT',
 ]
+
 CORS_ALLOW_HEADERS = [
     'accept',
     'accept-encoding',
@@ -115,7 +117,7 @@ TEMPLATES_DIR = os.path.join(BASE_DIR, "templates")
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [TEMPLATES_DIR, ],
+        'DIRS': [ TEMPLATES_DIR, ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -180,11 +182,11 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static/'),
 )
 STATIC_ROOT = os.path.join(BASE_DIR, 'static/root')  # can not use root and static files in the same folder
-STATICFILES_STORAGE = 'cloudinary_storage.storage.StaticHashedCloudinaryStorage'
+# STATICFILES_STORAGE = 'cloudinary_storage.storage.StaticHashedCloudinaryStorage'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, MEDIA_URL)
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+# DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
@@ -192,8 +194,14 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Email Settings
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.your-email-provider.com'
-EMAIL_PORT = 587
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+# EMAIL_HOST = 'mail.vashaacademy.com'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587 #465
+# EMAIL_USE_SSL = False
 EMAIL_USE_TLS = True
-# EMAIL_HOST_USER = 'your-email@example.com'
-# EMAIL_HOST_PASSWORD = 'your-email-App-password'
+EMAIL_HOST_USER = 'saikatislam709@gmail.com'
+EMAIL_HOST_PASSWORD = 'gxsuvnsdrqzdeijb'
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+# EMAIL_HOST_USER = 'team@vashaacademy.com'
+# EMAIL_HOST_PASSWORD = 'p@SsWrD!17#*aibid'

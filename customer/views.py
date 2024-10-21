@@ -12,34 +12,46 @@ def first_form_error(form):
 
 # Create your views here
 def login_view(request):
-    form = LoginForm(request.POST or None)
+    form = LoginForm()
     error = ""
-    is_email = request.GET.get('is_email') == 'true'
-
-    if request.method == "POST" and form.is_valid():
-        print(form.cleaned_data)
-        username = form.cleaned_data['username']
+    is_email = request.GET.get('is_email')
+    is_email = is_email.upper() == "TRUE" if is_email is not None else False
+    print(is_email)
+    if request.method == "POST":
+        form = LoginForm(request.POST)
+        print(form.changed_data)
+        username = request.POST.get('username')
         username = "+880" + username if not is_email else username
-        password = form.cleaned_data['password']
-        name = form.cleaned_data['name']
+        password = request.POST.get('password')
+        name = request.POST.get('name')
+
+        if form.errors != {}:
+            # error = first_form_error(form)
+            error = str(form.errors)
 
         customer = Customer.objects.filter(username=username).first()
         if customer:
             customer_auth = authenticate(username=username, password=password) # customer.password == password
             if customer_auth:
+                print("Found user....")
                 if customer.is_verified:
-                    # info = LoginInfo(user=customer, using_app=False)
-                    # info.save()
+                    info = LoginInfo(user=customer, using_app=False)
+                    info.save()
                     login(request, customer)
                     return redirect("home")
                 else:
-                    code = send_otp_code()
+                    print("sending code.")
+                    print(is_email)
+                    code = send_otp_code(username, is_email)
                     request.session['code'] = code
                     return redirect('customer:verification', id = customer.id)
             else:
                 error = "Wrong Password"
         else:
+            print("Did not found user....")
+            print("sending code.")
             code = send_otp_code(sent_to=username, is_email=is_email)
+            print("sending code done.")
             request.session['code'] = code
             user = Customer.objects.create_user(
                 username=username,
@@ -49,9 +61,6 @@ def login_view(request):
             )
             user.save()
             return redirect('customer:verification', id=user.id)
-    elif form.errors != {}:
-        # error = first_form_error(form)
-        error = str(form.errors)
     return render(request, "login.html", {'form':form, "error": error, 'is_email': is_email})
 
 
@@ -84,6 +93,8 @@ def verification(request, id):
 
 def reset_password(request):
     form = PasswordResetForm(request.POST or None)
+    is_email = request.GET.get('is_email')
+    is_email = is_email.upper() == "TRUE" if is_email is not None else False
     error = None
     if form.is_valid():
         username = form.cleaned_data['username']
@@ -96,7 +107,7 @@ def reset_password(request):
             error = "No user found with that number"
     elif form.errors != {}:
         error = str(form.errors)
-    return render(request, 'reset.html', {'form': form, 'error':error, 'hi':"Saikat"})
+    return render(request, 'reset.html', {'form': form, 'error':error, 'is_email':is_email})
 
 
 def update(request):

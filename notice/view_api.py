@@ -1,7 +1,7 @@
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import viewsets
-from notice.models import Notice, FAQ, PdfBooks
+from notice.models import Notice, FAQ, PdfBook
 from notice.serializers import NoticeSerializer, FaqSerializer, PdfSerializer
 
 
@@ -21,5 +21,5 @@ class FaqViewSets(viewsets.ModelViewSet):
 class PdfViewSets(viewsets.ModelViewSet):
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
-    queryset = PdfBooks.objects.all()
+    queryset = PdfBook.objects.all()
     serializer_class = PdfSerializer
