@@ -115,7 +115,7 @@
                             <!-- OPTION C-->
                             <div class="flex">
                                 <span class="font-bold inline-block w-8 h-8 border-2 border-sky-500 rounded-box text-center" @click="answer('c')" :class="{'bg-blue-600 text-white': activeQuestion.answered === 'c'}">3. </span>
-                                <p v-if="activeQuestion.question?.options_type === 'text'"> ${ activeQuestion.question?.c_text }$ </p>
+                                <p v-if="activeQuestion.question?.options_type === 'text'" class="font-bold"> ${ activeQuestion.question?.c_text }$ </p>
                                 <p v-if="activeQuestion.question?.options_type === 'image'">
                                     <!-- You can open the modal using ID.showModal() method -->
                                     <button class="btn p-0" onclick="c_my_modal_3.showModal()">

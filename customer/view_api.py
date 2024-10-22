@@ -19,8 +19,8 @@ class CustomerViewset(viewsets.ModelViewSet):
     @action(methods=["GET",], detail=False )
     def exists(self, request):
         exists = False
-        number = self.request.query_params.get('number').strip()
-        number = "+"+number if not number.startswith("+") else number
+        username = self.request.query_params.get('username').strip()
+        number = "+" + username if not username.startswith("+") else username
         print(number)
         user = Customer.objects.filter(number=number).first()
         print(user)
@@ -32,10 +32,10 @@ class CustomerViewset(viewsets.ModelViewSet):
         )
 
     @action(methods=["GET", ], detail=False, url_path="getbynumber/(?P<number>[^/.]+)")
-    def getbynumber(self, request, number):
+    def getbyusername(self, request, username):
         # number = "+"+number if not number.startswith("+") else number
-        print(number)
-        user = Customer.objects.filter(number=number).first()
+        print(username)
+        user = Customer.objects.filter(username=username).first()
         user = CustomerSerializer(user).data
         return Response(
             data=user, status=status.HTTP_200_OK
@@ -52,8 +52,8 @@ class CustomerViewset(viewsets.ModelViewSet):
         )
 
     @action(methods=["POST"], detail=False)
-    def sendotp(self, request):
-        otp = send_otp_code()
+    def sendotp(self, request, username, is_mail):
+        otp = send_otp_code(sent_to=username, is_email=is_mail)
         return Response(
             data = otp,
             status = status.HTTP_200_OK,
@@ -61,11 +61,11 @@ class CustomerViewset(viewsets.ModelViewSet):
 
     @action(detail=False,methods=['POST'])
     def login(self, request):
-        number = self.request.data.get('number')
+        username = self.request.data.get('username')
         password = self.request.data.get('password')
-        user = Customer.objects.filter(number = number).first()
+        user = Customer.objects.filter(username = username).first()
         print(user)
-        if user is not None and authenticate(username=number, password=password):
+        if user is not None and authenticate(username=username, password=password):
             info = LoginInfo(user= user)
             info.save()
             return Response(

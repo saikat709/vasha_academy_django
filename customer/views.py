@@ -19,7 +19,7 @@ def login_view(request):
     print(is_email)
     if request.method == "POST":
         form = LoginForm(request.POST)
-        print(form.changed_data)
+        print(form)
         username = request.POST.get('username')
         username = "+880" + username if not is_email else username
         password = request.POST.get('password')

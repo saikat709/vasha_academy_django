@@ -1,11 +1,7 @@
 from pathlib import Path
 import os
+from django_s3_storage.storage import S3Storage
 
-import cloudinary.uploader
-import cloudinary.api
-import cloudinary
-
-import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -18,13 +14,6 @@ CLOUDINARY_STORAGE = {
     'STATICFILES_MANIFEST_ROOT': os.path.join(BASE_DIR, '/')
 }
 
-
-cloudinary.config(
-    CLOUD_NAME =  'djqlxt6at',
-    API_KEY = '221474493174644',
-    API_SECRET = 'xbaElSG27zpFTNYlUTCoR-5eKRU',
-    STATICFILES_MANIFEST_ROOT = os.path.join(BASE_DIR, '/')
-)
 
 
 # Quick-start development settings - unsuitable for production
@@ -50,8 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
 
     'django.contrib.staticfiles',
-    'cloudinary_storage',
-    'cloudinary',
+    'django_s3_storage',
 
     'rest_framework',
     'rest_framework.authtoken',
@@ -182,10 +170,12 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static/'),
 )
 STATIC_ROOT = os.path.join(BASE_DIR, 'static/root')  # can not use root and static files in the same folder
+STATICFILES_STORAGE = "django_s3_storage.storage.StaticS3Storage"
 # STATICFILES_STORAGE = 'cloudinary_storage.storage.StaticHashedCloudinaryStorage'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, MEDIA_URL)
+DEFAULT_FILE_STORAGE = "django_s3_storage.storage.S3Storage"
 # DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
@@ -200,8 +190,29 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587 #465
 # EMAIL_USE_SSL = False
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'saikatislam709@gmail.com'
-EMAIL_HOST_PASSWORD = 'gxsuvnsdrqzdeijb'
+EMAIL_HOST_USER = 'vashaacademy1@gmail.com'
+EMAIL_HOST_PASSWORD = 'vvtavnvkdvymiihj'
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 # EMAIL_HOST_USER = 'team@vashaacademy.com'
 # EMAIL_HOST_PASSWORD = 'p@SsWrD!17#*aibid'
+
+
+
+
+
+## aws - s3
+AWS_REGION = "eu-north-1"
+AWS_ACCESS_KEY_ID = "AKIAS74TL3D5PKUVKHSO"
+AWS_SECRET_ACCESS_KEY = "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"
+# The optional AWS session token to use.
+# AWS_SESSION_TOKEN = ""
+
+AWS_S3_BUCKET_NAME = "vashaacademybucket"
+AWS_S3_ADDRESSING_STYLE = "auto"
+# The full URL to the S3 endpoint. Leave blank to use the default region URL.
+AWS_S3_ENDPOINT_URL = ""
+# A prefix to be applied to every stored file. This will be joined to every filename using the "/" separator.
+AWS_S3_KEY_PREFIX = "vashaacademy_uploads"
+
+
+AWS_S3_STORAGE = S3Storage(aws_s3_bucket_name='vashaacademybucket')

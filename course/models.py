@@ -9,6 +9,7 @@ from django.db.models import ManyToManyField, ForeignKey
 
 from customer.models import Customer
 from question.models import Question
+from vashaacademy.settings import AWS_S3_STORAGE
 from vashaacademy.utils import get_unique_filename
 
 
@@ -25,7 +26,7 @@ class Exam(models.Model):
 class Course(models.Model):
     title = models.CharField(max_length=100, null=False)
     price = models.IntegerField(null=False)
-    thumbnail = models.FileField(upload_to=get_unique_filename, validators=[validate_image_file_extension])
+    thumbnail = models.FileField(upload_to=get_unique_filename, validators=[validate_image_file_extension], storage=AWS_S3_STORAGE)
     is_free = models.BooleanField(default=False)
     discount = models.IntegerField(default=0, validators=[MaxValueValidator(100), MinValueValidator(0)])
     exams = models.ManyToManyField(Exam, related_name="courses", blank=True)

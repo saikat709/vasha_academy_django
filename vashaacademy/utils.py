@@ -6,12 +6,14 @@ from django.urls import reverse
 from dotenv import load_dotenv
 from django.core.mail import send_mail
 
+from vashaacademy.settings import BASE_DIR, EMAIL_HOST_USER
+
 load_dotenv()
 
 def sent_otp_email(otp, sent_to):
     subject = 'Vashaacademy OTP code'
     message = f'Your OTP is {otp}'
-    from_email = 'saikat709@gmail.com'
+    from_email = EMAIL_HOST_USER
     recipient_list = [sent_to,]
     print("calling sendmail here.")
     try:
@@ -63,12 +65,12 @@ def get_unique_filename(instance, filename):
 Aamarpay_Base_URL = "https://sandbox.aamarpay.com"
 Store_ID  = "aamarpaytest"
 Signature_Key = "dbb74894e82415a2f7ff0ec3a97e4183"
-BASE = "http://192.168.0.109:8000/"
+# BASE = "http://192.168.0.109:8000/"
 def make_payment(course_id, amount, user_id, tran_id):
     print("Utils: "+str(course_id))
-    success_url = BASE + reverse("course:payment_successful", kwargs= { 'user_id': user_id, 'course_id': course_id } )
+    success_url = BASE_DIR + reverse("course:payment_successful", kwargs= { 'user_id': user_id, 'course_id': course_id } )
     # print(success_url)
-    fail_url = BASE + reverse("course:payment_failed")
+    fail_url = BASE_DIR + reverse("course:payment_failed")
     gateway_data = {
         "store_id": "aamarpaytest",
         "tran_id": tran_id,
